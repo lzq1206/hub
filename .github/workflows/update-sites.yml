@@ -24,6 +24,7 @@ jobs:
         env:
           GITHUB_USERNAME: lzq1206
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EXTRA_REPOS: ${{ vars.HUB_EXTRA_REPOS }}
         run: python scripts/generate_sites.py --output README.md
 
       - name: Commit changes

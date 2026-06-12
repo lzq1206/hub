@@ -1,6 +1,14 @@
 import unittest
 
-from scripts.generate_sites import Site, _extract_site, _pages_url, _request_json, build_markdown, fetch_sites
+from scripts.generate_sites import (
+    Site,
+    _extract_site,
+    _pages_url,
+    _request_json,
+    build_markdown,
+    fetch_sites,
+    parse_extra_repos,
+)
 
 
 class GenerateSitesTests(unittest.TestCase):
@@ -26,8 +34,21 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertIn("暂未发现已部署的网站", markdown)
 
     def test_build_markdown_handles_non_http_url_preview(self):
-        markdown = build_markdown("lzq1206", [Site(name="local", url="ftp://local", description="desc")])
+        markdown = build_markdown("lzq1206", [Site(name="local", url="ftp://local", description="desc", updated_at=None)])
         self.assertIn("预览不可用", markdown)
+        self.assertIn("最近更新时间：未知", markdown)
+
+    def test_parse_extra_repos_deduplicates_and_strips(self):
+        repos = parse_extra_repos(" owner/repo ,owner/repo,foo/bar ")
+        self.assertEqual(repos, ["owner/repo", "foo/bar"])
+
+    def test_parse_extra_repos_rejects_invalid_format(self):
+        with self.assertRaises(ValueError):
+            parse_extra_repos("bad/repo/name")
+
+    def test_parse_extra_repos_rejects_path_traversal_in_repo_name(self):
+        with self.assertRaises(ValueError):
+            parse_extra_repos("owner/../repo")
 
     def test_fetch_sites_rejects_invalid_username(self):
         with self.assertRaises(ValueError):
