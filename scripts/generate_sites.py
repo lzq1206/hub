@@ -16,6 +16,7 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
+EXCLUDED_REPOS = {"family", "hub"}
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 # Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
@@ -74,6 +75,10 @@ def _extract_repo_owner(repo: dict, fallback: str) -> str:
 
 
 def _extract_site(pages_owner: str, repo: dict) -> Site | None:
+    repo_name = str(repo.get("name", "")).strip().lower()
+    if repo_name in EXCLUDED_REPOS:
+        return None
+
     homepage = (repo.get("homepage") or "").strip()
     has_pages = bool(repo.get("has_pages"))
 
@@ -229,6 +234,19 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
     )
 
 
+def build_sites_json(sites: Iterable[Site]) -> str:
+    payload = [
+        {
+            "name": site.name,
+            "url": site.url,
+            "description": site.description,
+            "updated_at": site.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ") if site.updated_at else None,
+        }
+        for site in sites
+    ]
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a website index README from GitHub repos")
     parser.add_argument("--username", default=os.getenv("GITHUB_USERNAME", DEFAULT_USERNAME))
@@ -244,6 +262,8 @@ def main() -> None:
     markdown = build_markdown(args.username, sites)
     with open(args.output, "w", encoding="utf-8") as file:
         file.write(markdown)
+    with open("sites.json", "w", encoding="utf-8") as file:
+        file.write(build_sites_json(sites))
 
 
 if __name__ == "__main__":

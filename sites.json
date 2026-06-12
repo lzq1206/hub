@@ -1,0 +1,62 @@
+[
+  {
+    "name": "notam-whisper",
+    "url": "https://rocket.rainywhisper.com/",
+    "description": "Auto-updated Rocket / NOTAM / NavWarnings KML viewer",
+    "updated_at": "2026-06-12T02:05:58Z"
+  },
+  {
+    "name": "OrbitWhisper",
+    "url": "https://orbit.rainywhisper.com/",
+    "description": "“高精度空间避碰决策”与“在轨资产精算与动态风险评估“",
+    "updated_at": "2026-06-11T20:43:30Z"
+  },
+  {
+    "name": "SunsetWhisper",
+    "url": "https://lzq1206.github.io/SunsetWhisper/",
+    "description": "AI晚霞算法",
+    "updated_at": "2026-06-11T17:28:56Z"
+  },
+  {
+    "name": "railwaystar",
+    "url": "https://lzq1206.github.io/railwaystar/",
+    "description": "China Railway Dark Sky Map",
+    "updated_at": "2026-05-20T15:53:21Z"
+  },
+  {
+    "name": "webwhisper",
+    "url": "https://lzq1206.github.io/webwhisper/",
+    "description": "暂无介绍",
+    "updated_at": "2026-04-28T02:27:56Z"
+  },
+  {
+    "name": "QuantWhisper",
+    "url": "https://lzq1206.github.io/QuantWhisper/",
+    "description": "没什么道理的量化交易",
+    "updated_at": "2026-04-28T02:24:06Z"
+  },
+  {
+    "name": "WeatherWhisper",
+    "url": "https://lzq1206.github.io/WeatherWhisper/",
+    "description": "climate analysis and where to go",
+    "updated_at": "2026-04-03T07:49:39Z"
+  },
+  {
+    "name": "CulturalWhisper",
+    "url": "https://lzq1206.github.io/CulturalWhisper/",
+    "description": "文保地图",
+    "updated_at": "2026-04-03T06:59:17Z"
+  },
+  {
+    "name": "MirageWhisper",
+    "url": "https://lzq1206.github.io/MirageWhisper/",
+    "description": "AI写的海市蜃楼、绿闪预报",
+    "updated_at": "2026-04-02T16:42:05Z"
+  },
+  {
+    "name": "Milkyseas",
+    "url": "https://lzq1206.github.io/Milkyseas/",
+    "description": "荧光海预报",
+    "updated_at": "2026-04-02T07:19:53Z"
+  }
+]

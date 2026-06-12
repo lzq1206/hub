@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>hub｜Rainy Whisper 网站集合</title>
+  <meta name="description" content="自动聚合已部署的网站地址、简介与预览截图。" />
+  <style>
+    :root{
+      --bg0:#050914; --bg1:#0b1222; --bg2:#111a31;
+      --card:#0e172acc; --line:rgba(255,255,255,.08);
+      --text:#eef4ff; --muted:#aebad4; --soft:#d7e2fb;
+      --accent:#7dd3fc; --accent2:#a78bfa; --accent3:#34d399;
+      --shadow:0 24px 70px rgba(0,0,0,.32); --radius:24px;
+    }
+    *{box-sizing:border-box} body{
+      margin:0; min-height:100vh; color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background:
+        radial-gradient(1100px 700px at 15% 10%, rgba(125,211,252,.18), transparent 60%),
+        radial-gradient(900px 600px at 85% 15%, rgba(167,139,250,.14), transparent 55%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 42%,var(--bg2));
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1480px;margin:0 auto;padding:24px 18px 54px}
+    .hero{padding:28px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(15,23,42,.94),rgba(8,15,30,.96));box-shadow:var(--shadow)}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:stretch}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#dce8ff;font-size:13px;font-weight:700}
+    h1{margin:14px 0 10px;font-size:clamp(32px,5vw,62px);line-height:1.02;letter-spacing:-.03em}
+    .lead{margin:0;max-width:66ch;color:var(--soft);font-size:16px;line-height:1.85}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .btn,.chip,.ghost{transition:.15s ease}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);font-weight:700}
+    .btn:hover,.chip:hover,.ghost:hover{transform:translateY(-1px);background:rgba(255,255,255,.08)}
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .stat{padding:16px;border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08)}
+    .stat .k{font-size:12px;color:var(--muted);margin-bottom:6px}.stat .v{font-size:28px;font-weight:800}.stat .d{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
+    .section{margin-top:18px;padding:18px;border-radius:28px;border:1px solid var(--line);background:rgba(9,16,31,.66);backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:14px}
+    .section-head h2{margin:0;font-size:22px}.section-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+    .toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:14px}
+    .search{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:18px;border:1px solid var(--line);background:rgba(7,17,31,.78)}
+    .search input{width:100%;border:0;outline:none;background:transparent;color:var(--text);font-size:15px}.search input::placeholder{color:#8091bb}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .chip{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--soft);padding:9px 12px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .chip.active{background:linear-gradient(135deg,rgba(125,211,252,.22),rgba(167,139,250,.22));border-color:rgba(125,211,252,.35);color:#fff}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .card{overflow:hidden;border-radius:24px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(19,33,62,.92),rgba(12,20,37,.96));box-shadow:0 18px 42px rgba(0,0,0,.28);display:flex;flex-direction:column}
+    .shot{position:relative;aspect-ratio:16/10;background:#09111d;overflow:hidden}
+    .shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}.card:hover .shot img{transform:scale(1.02)}
+    .shot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:84px;background:linear-gradient(180deg,transparent,rgba(9,17,29,.92))}
+    .badge-row{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;gap:8px;align-items:start;z-index:2}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;background:rgba(7,17,31,.78);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)}
+    .content{padding:16px 16px 18px;display:grid;gap:10px}
+    .title{display:flex;justify-content:space-between;gap:10px;align-items:start}.title h3{margin:0;font-size:18px;line-height:1.3}.title .mini{color:var(--muted);font-size:12px;white-space:nowrap}
+    .summary{margin:0;color:#d7e2fb;font-size:14px;line-height:1.75;min-height:3.5em}.meta{display:flex;flex-wrap:wrap;gap:8px}.tag{padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#c7d6f5;font-size:12px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}.ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-size:13px;font-weight:800;flex:1 1 140px;text-align:center}.ghost.primary{background:linear-gradient(135deg,rgba(125,211,252,.2),rgba(52,211,153,.14));border-color:rgba(125,211,252,.25)}
+    .footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.8}.empty{padding:26px;border-radius:20px;border:1px dashed rgba(255,255,255,.16);color:var(--muted);text-align:center;background:rgba(255,255,255,.03)}
+    @media (max-width:980px){.hero-grid,.toolbar{grid-template-columns:1fr}.filters{justify-content:flex-start}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:640px){.wrap{padding:14px}.hero{padding:18px;border-radius:24px}.section{padding:14px;border-radius:22px}.stats{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">🌐 hub · Rainy Whisper Websites</div>
+          <h1>我的网页集合站</h1>
+          <p class="lead">自动聚合已部署的网站地址、简介与预览。这里作为整个仓库的首页，点击即可跳转到各个独立项目页面。</p>
+          <div class="hero-actions">
+            <a class="btn" href="#gallery">开始浏览</a>
+            <a class="btn" href="https://github.com/lzq1206" target="_blank" rel="noreferrer">GitHub 主页</a>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="k">站点数量</div><div class="v" id="siteCount">—</div><div class="d">自动聚合的唯一链接数</div></div>
+          <div class="stat"><div class="k">来源类型</div><div class="v" id="sourceCount">—</div><div class="d">GitHub Pages / 自定义域名</div></div>
+          <div class="stat"><div class="k">数据文件</div><div class="v">sites.json</div><div class="d">由脚本自动生成</div></div>
+          <div class="stat"><div class="k">首页状态</div><div class="v">Hub</div><div class="d">可直接部署到 GitHub Pages</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <div class="section-head">
+        <div><h2>站点集合</h2><p>支持搜索与来源筛选；预览图使用网站截图服务动态生成。</p></div>
+        <p id="hint">正在读取站点数据…</p>
+      </div>
+      <div class="toolbar">
+        <label class="search" aria-label="搜索站点">
+          <span>⌕</span>
+          <input id="search" type="search" placeholder="搜索站点名 / 简介 / 域名" autocomplete="off" />
+        </label>
+        <div class="filters" role="tablist" aria-label="来源筛选">
+          <button class="chip active" data-filter="all" type="button">全部</button>
+          <button class="chip" data-filter="GitHub Pages" type="button">GitHub Pages</button>
+          <button class="chip" data-filter="Custom domain" type="button">自定义域名</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>没有匹配的站点。试试换个关键词。</div>
+    </section>
+
+    <div class="footer">说明：简介优先使用 GitHub 仓库元数据；截图来自 thum.io 预览服务。更新站点后，重新运行 `python scripts/generate_sites.py` 即可刷新数据。🦞</div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const search = document.getElementById('search');
+    const hint = document.getElementById('hint');
+    const siteCount = document.getElementById('siteCount');
+    const sourceCount = document.getElementById('sourceCount');
+    const chips = [...document.querySelectorAll('.chip[data-filter]')];
+    let activeFilter = 'all';
+    let sites = [];
+
+    const esc = s => String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    const previewUrl = url => `https://image.thum.io/get/width/720/noanimate/${encodeURIComponent(url)}`;
+    const sourceType = url => {
+      try {
+        const host = new URL(url).hostname.replace(/^www\./, '');
+        return host.endsWith('github.io') ? 'GitHub Pages' : 'Custom domain';
+      } catch {
+        return '未知';
+      }
+    };
+
+    function matches(item, q, filter) {
+      const hay = [item.name, item.description, item.url, sourceType(item.url)].join(' ').toLowerCase();
+      return (!q || hay.includes(q.toLowerCase())) && (filter === 'all' || sourceType(item.url) === filter);
+    }
+
+    function render() {
+      const q = search.value.trim();
+      const items = sites.filter(site => matches(site, q, activeFilter));
+      grid.innerHTML = items.map(site => `
+        <article class="card">
+          <a class="shot" href="${esc(site.url)}" target="_blank" rel="noreferrer" aria-label="打开 ${esc(site.name)}">
+            <div class="badge-row">
+              <span class="badge">${esc(sourceType(site.url))}</span>
+              <span class="badge"><strong>${esc(site.name)}</strong></span>
+            </div>
+            <img src="${esc(previewUrl(site.url))}" alt="${esc(site.name)} 的截图预览" loading="lazy" />
+          </a>
+          <div class="content">
+            <div class="title">
+              <h3>${esc(site.name)}</h3>
+              <div class="mini">${esc(new URL(site.url).hostname.replace(/^www\./, ''))}</div>
+            </div>
+            <p class="summary">${esc(site.description || '暂无介绍')}</p>
+            <div class="meta">
+              <span class="tag">${esc(sourceType(site.url))}</span>
+              <span class="tag">${esc(site.updated_at ? new Date(site.updated_at).toLocaleString('zh-CN', { hour12:false }) : '更新时间未知')}</span>
+            </div>
+            <div class="actions">
+              <a class="ghost primary" href="${esc(site.url)}" target="_blank" rel="noreferrer">打开站点</a>
+              <a class="ghost" href="${esc(previewUrl(site.url))}" target="_blank" rel="noreferrer">查看预览</a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      empty.hidden = items.length !== 0;
+    }
+
+    async function init() {
+      try {
+        const res = await fetch('sites.json', { cache: 'no-store' });
+        sites = await res.json();
+        siteCount.textContent = String(sites.length);
+        sourceCount.textContent = String(new Set(sites.map(s => sourceType(s.url))).size);
+        hint.textContent = `已加载 ${sites.length} 个站点。`;
+        render();
+      } catch (err) {
+        hint.textContent = '站点数据加载失败，请先运行生成脚本。';
+        grid.innerHTML = `<div class="empty">无法读取 sites.json：${esc(err.message || err)}</div>`;
+      }
+    }
+
+    chips.forEach(btn => btn.addEventListener('click', () => {
+      chips.forEach(x => x.classList.toggle('active', x === btn));
+      activeFilter = btn.dataset.filter || 'all';
+      render();
+    }));
+    search.addEventListener('input', render);
+    init();
+  </script>
+</body>
+</html>

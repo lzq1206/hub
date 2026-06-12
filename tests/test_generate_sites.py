@@ -6,6 +6,7 @@ from scripts.generate_sites import (
     _pages_url,
     _request_json,
     build_markdown,
+    build_sites_json,
     fetch_sites,
     parse_extra_repos,
 )
@@ -37,6 +38,11 @@ class GenerateSitesTests(unittest.TestCase):
         markdown = build_markdown("lzq1206", [Site(name="local", url="ftp://local", description="desc", updated_at=None)])
         self.assertIn("预览不可用", markdown)
         self.assertIn("最近更新时间：未知", markdown)
+
+    def test_build_sites_json_serializes_sites(self):
+        payload = build_sites_json([Site(name="demo", url="https://example.com", description="desc", updated_at=None)])
+        self.assertIn('"name": "demo"', payload)
+        self.assertIn('"url": "https://example.com"', payload)
 
     def test_parse_extra_repos_deduplicates_and_strips(self):
         repos = parse_extra_repos(" owner/repo ,owner/repo,foo/bar ")
