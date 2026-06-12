@@ -38,10 +38,14 @@ REPO_FULL_NAME_PATTERN = re.compile(
     r"^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
 )
 META_DESCRIPTION_PATTERN = re.compile(
-    r'<meta\s+[^>]*name=["\']description["\'][^>]*content=["\'](.*?)["\']',
+    r"<meta\s+[^>]*>",
     re.IGNORECASE | re.DOTALL,
 )
+META_NAME_DESCRIPTION_PATTERN = re.compile(r'name=["\']description["\']', re.IGNORECASE)
+META_CONTENT_PATTERN = re.compile(r'content=["\'](.*?)["\']', re.IGNORECASE | re.DOTALL)
 TITLE_PATTERN = re.compile(r"<title>(.*?)</title>", re.IGNORECASE | re.DOTALL)
+DEFAULT_AUTO_DESCRIPTION = "自动生成介绍"
+AUTO_DESCRIPTION_SUFFIX = "项目主页"
 
 
 @dataclass
@@ -98,9 +102,15 @@ def _derive_site_name(url: str, title: str | None) -> str:
 
 
 def _extract_page_metadata(page_html: str) -> tuple[str | None, str | None]:
-    description_match = META_DESCRIPTION_PATTERN.search(page_html)
+    description = None
+    for meta_tag in META_DESCRIPTION_PATTERN.findall(page_html):
+        if not META_NAME_DESCRIPTION_PATTERN.search(meta_tag):
+            continue
+        content_match = META_CONTENT_PATTERN.search(meta_tag)
+        if content_match:
+            description = html.unescape(_normalize_text(content_match.group(1)))
+            break
     title_match = TITLE_PATTERN.search(page_html)
-    description = html.unescape(_normalize_text(description_match.group(1))) if description_match else None
     title = html.unescape(_normalize_text(title_match.group(1))) if title_match else None
     return description or None, title or None
 
@@ -113,7 +123,7 @@ def _request_text(url: str) -> str | None:
             content_type = response.headers.get("Content-Type", "")
             if "html" not in content_type.lower():
                 return None
-            data = response.read(MAX_HTML_READ_BYTES).decode("utf-8", errors="ignore")
+            data = response.read(MAX_HTML_READ_BYTES).decode("utf-8", errors="replace")
             return data
     except (HTTPError, URLError, TimeoutError, ValueError):
         return None
@@ -123,7 +133,7 @@ def _build_manual_site(url: str) -> Site:
     page_html = _request_text(url)
     description, title = _extract_page_metadata(page_html or "")
     name = _derive_site_name(url, title)
-    auto_description = description or (f"{name} 项目主页" if name else "自动生成介绍")
+    auto_description = description or (f"{name} {AUTO_DESCRIPTION_SUFFIX}" if name else DEFAULT_AUTO_DESCRIPTION)
     return Site(name=name, url=url, description=auto_description, updated_at=None)
 
 
