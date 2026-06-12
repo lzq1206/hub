@@ -11,6 +11,7 @@ import os
 import re
 from dataclasses import dataclass
 from typing import Iterable
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
@@ -26,10 +27,10 @@ DEFAULT_MANUAL_SITE_URLS = [
     "https://lzq1206.github.io/SunsetWhisper/",
     "https://lzq1206.github.io/Milkyseas/",
     "https://orbit.rainywhisper.com/",
-    "https://lzq1206.github.io/QuantWhisper/",
     "https://lzq1206.github.io/webwhisper/",
     "https://lzq1206.github.io/railwaystar/",
 ]
+MAX_HTML_READ_BYTES = 30000
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 # Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
@@ -112,9 +113,9 @@ def _request_text(url: str) -> str | None:
             content_type = response.headers.get("Content-Type", "")
             if "html" not in content_type.lower():
                 return None
-            data = response.read(30000).decode("utf-8", errors="ignore")
+            data = response.read(MAX_HTML_READ_BYTES).decode("utf-8", errors="ignore")
             return data
-    except Exception:
+    except (HTTPError, URLError, TimeoutError, ValueError):
         return None
 
 
@@ -225,7 +226,7 @@ def fetch_sites(
                 f"{API_BASE}/users/{username}/repos?per_page=100&page={page}&type=owner&sort=updated",
                 token,
             )
-        except Exception:
+        except (HTTPError, URLError, TimeoutError, ValueError):
             break
         if not repos:
             break
@@ -244,7 +245,7 @@ def fetch_sites(
             continue
         try:
             repo = _request_repo(full_name, token)
-        except Exception:
+        except (HTTPError, URLError, TimeoutError, ValueError):
             continue
         site = _extract_site(_extract_repo_owner(repo, username), repo)
         if not site or site.url in seen:
