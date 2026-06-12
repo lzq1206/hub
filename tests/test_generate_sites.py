@@ -2,12 +2,15 @@ import unittest
 
 from scripts.generate_sites import (
     Site,
+    _build_manual_site,
+    _extract_page_metadata,
     _extract_site,
     _pages_url,
     _request_json,
     build_markdown,
     fetch_sites,
     parse_extra_repos,
+    parse_manual_sites,
 )
 
 
@@ -53,6 +56,22 @@ class GenerateSitesTests(unittest.TestCase):
     def test_fetch_sites_rejects_invalid_username(self):
         with self.assertRaises(ValueError):
             fetch_sites("bad/name")
+
+    def test_parse_manual_sites_deduplicates_and_filters_invalid_urls(self):
+        urls = parse_manual_sites(["https://a.com", "https://a.com", "ftp://bad", ""])
+        self.assertEqual(urls, ["https://a.com"])
+
+    def test_extract_page_metadata(self):
+        page = '<html><head><title>Demo Site</title><meta name="description" content="Hello world"></head></html>'
+        description, title = _extract_page_metadata(page)
+        self.assertEqual(description, "Hello world")
+        self.assertEqual(title, "Demo Site")
+
+    def test_build_manual_site_uses_auto_description_when_missing(self):
+        with unittest.mock.patch("scripts.generate_sites._request_text", return_value="<title>My Site</title>"):
+            site = _build_manual_site("https://example.com/app/")
+        self.assertEqual(site.name, "My Site")
+        self.assertEqual(site.description, "My Site 项目主页")
 
     def test_request_json_rejects_non_github_users_api_url(self):
         with self.assertRaises(ValueError):

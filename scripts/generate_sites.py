@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import html
 import json
 import os
 import re
@@ -16,12 +17,30 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
+DEFAULT_MANUAL_SITE_URLS = [
+    "https://rocket.rainywhisper.com/",
+    "https://lzq1206.github.io/WeatherWhisper/",
+    "https://lzq1206.github.io/CulturalWhisper/",
+    "https://lzq1206.github.io/QuantWhisper/",
+    "https://lzq1206.github.io/MirageWhisper/",
+    "https://lzq1206.github.io/SunsetWhisper/",
+    "https://lzq1206.github.io/Milkyseas/",
+    "https://orbit.rainywhisper.com/",
+    "https://lzq1206.github.io/QuantWhisper/",
+    "https://lzq1206.github.io/webwhisper/",
+    "https://lzq1206.github.io/railwaystar/",
+]
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 # Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
 REPO_FULL_NAME_PATTERN = re.compile(
     r"^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
 )
+META_DESCRIPTION_PATTERN = re.compile(
+    r'<meta\s+[^>]*name=["\']description["\'][^>]*content=["\'](.*?)["\']',
+    re.IGNORECASE | re.DOTALL,
+)
+TITLE_PATTERN = re.compile(r"<title>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 
 
 @dataclass
@@ -62,6 +81,49 @@ def _parse_updated_at(value: str | None) -> dt.datetime | None:
 def _validate_repo_full_name(full_name: str) -> None:
     if not REPO_FULL_NAME_PATTERN.fullmatch(full_name):
         raise ValueError(f"Invalid repo full name format: {full_name}")
+
+
+def _normalize_text(value: str) -> str:
+    return " ".join(value.split())
+
+
+def _derive_site_name(url: str, title: str | None) -> str:
+    clean_title = _normalize_text(title or "")
+    if clean_title:
+        return clean_title
+    parsed = urlparse(url)
+    slug = parsed.path.strip("/").split("/")[-1]
+    return slug or parsed.netloc
+
+
+def _extract_page_metadata(page_html: str) -> tuple[str | None, str | None]:
+    description_match = META_DESCRIPTION_PATTERN.search(page_html)
+    title_match = TITLE_PATTERN.search(page_html)
+    description = html.unescape(_normalize_text(description_match.group(1))) if description_match else None
+    title = html.unescape(_normalize_text(title_match.group(1))) if title_match else None
+    return description or None, title or None
+
+
+def _request_text(url: str) -> str | None:
+    headers = {"Accept": "text/html,*/*;q=0.8", "User-Agent": "hub-site-indexer"}
+    request = Request(url, headers=headers)
+    try:
+        with urlopen(request, timeout=10) as response:
+            content_type = response.headers.get("Content-Type", "")
+            if "html" not in content_type.lower():
+                return None
+            data = response.read(30000).decode("utf-8", errors="ignore")
+            return data
+    except Exception:
+        return None
+
+
+def _build_manual_site(url: str) -> Site:
+    page_html = _request_text(url)
+    description, title = _extract_page_metadata(page_html or "")
+    name = _derive_site_name(url, title)
+    auto_description = description or (f"{name} 项目主页" if name else "自动生成介绍")
+    return Site(name=name, url=url, description=auto_description, updated_at=None)
 
 
 def _extract_repo_owner(repo: dict, fallback: str) -> str:
@@ -133,10 +195,23 @@ def parse_extra_repos(value: str | None) -> list[str]:
     return repos
 
 
+def parse_manual_sites(values: Iterable[str] | None) -> list[str]:
+    sites: list[str] = []
+    seen: set[str] = set()
+    for value in values or []:
+        url = (value or "").strip()
+        if not _is_http_url(url) or url in seen:
+            continue
+        sites.append(url)
+        seen.add(url)
+    return sites
+
+
 def fetch_sites(
     username: str,
     token: str | None = None,
     extra_repos: Iterable[str] | None = None,
+    manual_sites: Iterable[str] | None = None,
 ) -> list[Site]:
     _validate_username(username)
     sites: list[Site] = []
@@ -170,6 +245,13 @@ def fetch_sites(
             continue
         sites.append(site)
         seen.add(site.url)
+
+    for url in parse_manual_sites(manual_sites):
+        if url in seen:
+            continue
+        site = _build_manual_site(url)
+        sites.append(site)
+        seen.add(url)
 
     sites.sort(key=_site_sort_key)
     return sites
@@ -234,13 +316,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--username", default=os.getenv("GITHUB_USERNAME", DEFAULT_USERNAME))
     parser.add_argument("--token", default=os.getenv("GITHUB_TOKEN"))
     parser.add_argument("--extra-repos", default=os.getenv("GITHUB_EXTRA_REPOS", ""))
+    parser.add_argument("--manual-sites", default=os.getenv("HUB_MANUAL_SITES", ""))
     parser.add_argument("--output", default="README.md")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    sites = fetch_sites(args.username, args.token, parse_extra_repos(args.extra_repos))
+    manual_sites = args.manual_sites.split(",") if args.manual_sites else DEFAULT_MANUAL_SITE_URLS
+    sites = fetch_sites(args.username, args.token, parse_extra_repos(args.extra_repos), manual_sites)
     markdown = build_markdown(args.username, sites)
     with open(args.output, "w", encoding="utf-8") as file:
         file.write(markdown)
