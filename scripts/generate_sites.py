@@ -17,6 +17,7 @@ from urllib.request import Request, urlopen
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 EXCLUDED_REPOS = {"family", "hub"}
+PREVIEW_REPO_BASE = "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots"
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 # Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
@@ -44,6 +45,16 @@ def _pages_url(username: str, repo_name: str) -> str:
     if repo_name.lower() == f"{username.lower()}.github.io":
         return f"https://{username}.github.io/"
     return f"https://{username}.github.io/{quote(repo_name, safe='')}/"
+
+
+def _site_slug(url: str) -> str:
+    parsed = urlparse(url)
+    host = (parsed.hostname or "site").replace("www.", "")
+    path = parsed.path.strip("/")
+    if path:
+        path = re.sub(r"[^a-zA-Z0-9]+", "-", path).strip("-").lower()
+        return f"{host.replace('.', '-')}-{path}".lower()
+    return host.replace('.', '-').lower()
 
 
 def _validate_username(username: str) -> None:
@@ -196,7 +207,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
     rows: list[str] = []
     for site in sites:
         preview = (
-            f"https://image.thum.io/get/width/640/noanimate/{quote(site.url, safe='')}"
+            f"{PREVIEW_REPO_BASE}/{_site_slug(site.url)}.png"
             if _is_http_url(site.url)
             else None
         )
@@ -224,6 +235,8 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
             "",
             f"自动聚合 [@{username}](https://github.com/{username}) 及附加仓库的已部署网站地址、简介与预览。",
             "",
+            "截图图片存放在独立仓库：[`hub-previews`](https://github.com/lzq1206/hub-previews)",
+            "",
             f"_最后更新：{now}_",
             "",
             "## 网站列表",
@@ -241,6 +254,8 @@ def build_sites_json(sites: Iterable[Site]) -> str:
             "url": site.url,
             "description": site.description,
             "updated_at": site.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ") if site.updated_at else None,
+            "slug": _site_slug(site.url),
+            "preview_url": f"{PREVIEW_REPO_BASE}/{_site_slug(site.url)}.png",
         }
         for site in sites
     ]

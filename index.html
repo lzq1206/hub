@@ -123,7 +123,6 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
 
-    const previewUrl = url => `https://image.thum.io/get/width/720/noanimate/${encodeURIComponent(url)}`;
     const sourceType = url => {
       try {
         const host = new URL(url).hostname.replace(/^www\./, '');
@@ -148,7 +147,7 @@
               <span class="badge">${esc(sourceType(site.url))}</span>
               <span class="badge"><strong>${esc(site.name)}</strong></span>
             </div>
-            <img src="${esc(previewUrl(site.url))}" alt="${esc(site.name)} 的截图预览" loading="lazy" />
+            <img src="${esc(site.preview_url || '')}" alt="${esc(site.name)} 的截图预览" loading="eager" onerror="this.replaceWith(Object.assign(document.createElement('div'),{style:'height:100%;display:grid;place-items:center;color:#9bb0d7;font-weight:800;letter-spacing:.08em',textContent:'NO PREVIEW'}))" />
           </a>
           <div class="content">
             <div class="title">
@@ -162,7 +161,7 @@
             </div>
             <div class="actions">
               <a class="ghost primary" href="${esc(site.url)}" target="_blank" rel="noreferrer">打开站点</a>
-              <a class="ghost" href="${esc(previewUrl(site.url))}" target="_blank" rel="noreferrer">查看预览</a>
+              <a class="ghost" href="${esc(site.preview_url || site.url)}" target="_blank" rel="noreferrer">查看预览</a>
             </div>
           </div>
         </article>

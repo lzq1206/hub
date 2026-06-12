@@ -43,6 +43,7 @@ class GenerateSitesTests(unittest.TestCase):
         payload = build_sites_json([Site(name="demo", url="https://example.com", description="desc", updated_at=None)])
         self.assertIn('"name": "demo"', payload)
         self.assertIn('"url": "https://example.com"', payload)
+        self.assertIn('"preview_url":', payload)
 
     def test_parse_extra_repos_deduplicates_and_strips(self):
         repos = parse_extra_repos(" owner/repo ,owner/repo,foo/bar ")

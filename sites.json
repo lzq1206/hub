@@ -1,62 +1,82 @@
 [
   {
-    "name": "notam-whisper",
-    "url": "https://rocket.rainywhisper.com/",
-    "description": "Auto-updated Rocket / NOTAM / NavWarnings KML viewer",
-    "updated_at": "2026-06-12T02:05:58Z"
-  },
-  {
     "name": "OrbitWhisper",
     "url": "https://orbit.rainywhisper.com/",
     "description": "“高精度空间避碰决策”与“在轨资产精算与动态风险评估“",
-    "updated_at": "2026-06-11T20:43:30Z"
+    "updated_at": "2026-06-12T03:35:19Z",
+    "slug": "orbit-rainywhisper-com",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/orbit-rainywhisper-com.png"
+  },
+  {
+    "name": "notam-whisper",
+    "url": "https://rocket.rainywhisper.com/",
+    "description": "Auto-updated Rocket / NOTAM / NavWarnings KML viewer",
+    "updated_at": "2026-06-12T02:05:58Z",
+    "slug": "rocket-rainywhisper-com",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/rocket-rainywhisper-com.png"
   },
   {
     "name": "SunsetWhisper",
     "url": "https://lzq1206.github.io/SunsetWhisper/",
     "description": "AI晚霞算法",
-    "updated_at": "2026-06-11T17:28:56Z"
+    "updated_at": "2026-06-11T17:28:56Z",
+    "slug": "lzq1206-github-io-sunsetwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-sunsetwhisper.png"
   },
   {
     "name": "railwaystar",
     "url": "https://lzq1206.github.io/railwaystar/",
     "description": "China Railway Dark Sky Map",
-    "updated_at": "2026-05-20T15:53:21Z"
+    "updated_at": "2026-05-20T15:53:21Z",
+    "slug": "lzq1206-github-io-railwaystar",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-railwaystar.png"
   },
   {
     "name": "webwhisper",
     "url": "https://lzq1206.github.io/webwhisper/",
     "description": "暂无介绍",
-    "updated_at": "2026-04-28T02:27:56Z"
+    "updated_at": "2026-04-28T02:27:56Z",
+    "slug": "lzq1206-github-io-webwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-webwhisper.png"
   },
   {
     "name": "QuantWhisper",
     "url": "https://lzq1206.github.io/QuantWhisper/",
     "description": "没什么道理的量化交易",
-    "updated_at": "2026-04-28T02:24:06Z"
+    "updated_at": "2026-04-28T02:24:06Z",
+    "slug": "lzq1206-github-io-quantwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-quantwhisper.png"
   },
   {
     "name": "WeatherWhisper",
     "url": "https://lzq1206.github.io/WeatherWhisper/",
     "description": "climate analysis and where to go",
-    "updated_at": "2026-04-03T07:49:39Z"
+    "updated_at": "2026-04-03T07:49:39Z",
+    "slug": "lzq1206-github-io-weatherwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-weatherwhisper.png"
   },
   {
     "name": "CulturalWhisper",
     "url": "https://lzq1206.github.io/CulturalWhisper/",
     "description": "文保地图",
-    "updated_at": "2026-04-03T06:59:17Z"
+    "updated_at": "2026-04-03T06:59:17Z",
+    "slug": "lzq1206-github-io-culturalwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-culturalwhisper.png"
   },
   {
     "name": "MirageWhisper",
     "url": "https://lzq1206.github.io/MirageWhisper/",
     "description": "AI写的海市蜃楼、绿闪预报",
-    "updated_at": "2026-04-02T16:42:05Z"
+    "updated_at": "2026-04-02T16:42:05Z",
+    "slug": "lzq1206-github-io-miragewhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-miragewhisper.png"
   },
   {
     "name": "Milkyseas",
     "url": "https://lzq1206.github.io/Milkyseas/",
     "description": "荧光海预报",
-    "updated_at": "2026-04-02T07:19:53Z"
+    "updated_at": "2026-04-02T07:19:53Z",
+    "slug": "lzq1206-github-io-milkyseas",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-milkyseas.png"
   }
 ]
