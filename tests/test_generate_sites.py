@@ -24,7 +24,7 @@ class GenerateSitesTests(unittest.TestCase):
         site = _extract_site("lzq1206", repo)
         self.assertIsNotNone(site)
         self.assertEqual(site.url, "https://lzq1206.github.io/demo/")
-        self.assertEqual(site.description, "暂无介绍")
+        self.assertIn("GitHub Pages 站点", site.description)
 
     def test_pages_url_for_user_site(self):
         self.assertEqual(_pages_url("lzq1206", "lzq1206.github.io"), "https://lzq1206.github.io/")

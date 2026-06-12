@@ -4,13 +4,13 @@
 
 截图图片存放在独立仓库：[`hub-previews`](https://github.com/lzq1206/hub-previews)
 
-_最后更新：2026-06-12 03:37 UTC_
+_最后更新：2026-06-12 03:43 UTC_
 
 ## 网站列表
 
 ### [OrbitWhisper](https://orbit.rainywhisper.com/)
 
-“高精度空间避碰决策”与“在轨资产精算与动态风险评估“
+3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。
 
 最近更新时间：2026-06-12 03:35 UTC
 
@@ -18,7 +18,7 @@ _最后更新：2026-06-12 03:37 UTC_
 
 ### [notam-whisper](https://rocket.rainywhisper.com/)
 
-Auto-updated Rocket / NOTAM / NavWarnings KML viewer
+面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。
 
 最近更新时间：2026-06-12 02:05 UTC
 
@@ -26,7 +26,7 @@ Auto-updated Rocket / NOTAM / NavWarnings KML viewer
 
 ### [SunsetWhisper](https://lzq1206.github.io/SunsetWhisper/)
 
-AI晚霞算法
+中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。
 
 最近更新时间：2026-06-11 17:28 UTC
 
@@ -34,7 +34,7 @@ AI晚霞算法
 
 ### [railwaystar](https://lzq1206.github.io/railwaystar/)
 
-China Railway Dark Sky Map
+中国高铁暗夜巡礼地图，面向高铁线路沿线的夜景与暗夜观测兴趣展示，适合用地图方式快速浏览线路与观测点。
 
 最近更新时间：2026-05-20 15:53 UTC
 
@@ -42,7 +42,7 @@ China Railway Dark Sky Map
 
 ### [webwhisper](https://lzq1206.github.io/webwhisper/)
 
-暂无介绍
+可匿名发帖的演示站，带有算法调控后台和虚拟内容展示，适合作为 Web 产品演示、信息流实验或互动原型页面。
 
 最近更新时间：2026-04-28 02:27 UTC
 
@@ -50,7 +50,7 @@ China Railway Dark Sky Map
 
 ### [QuantWhisper](https://lzq1206.github.io/QuantWhisper/)
 
-没什么道理的量化交易
+EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益、持仓快照、最新调仓和比较指标，并支持 GitHub Actions 自动部署与 Telegram 汇报。
 
 最近更新时间：2026-04-28 02:24 UTC
 
@@ -58,7 +58,7 @@ China Railway Dark Sky Map
 
 ### [WeatherWhisper](https://lzq1206.github.io/WeatherWhisper/)
 
-climate analysis and where to go
+面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。
 
 最近更新时间：2026-04-03 07:49 UTC
 
@@ -66,7 +66,7 @@ climate analysis and where to go
 
 ### [CulturalWhisper](https://lzq1206.github.io/CulturalWhisper/)
 
-文保地图
+全国重点文物保护单位地图页，支持 KML / GeoJSON 导入、搜索、批次与省份筛选、点位详情查看和统计汇总，方便把文保名录快速落到地图上。
 
 最近更新时间：2026-04-03 06:59 UTC
 
@@ -74,7 +74,7 @@ climate analysis and where to go
 
 ### [MirageWhisper](https://lzq1206.github.io/MirageWhisper/)
 
-AI写的海市蜃楼、绿闪预报
+基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。
 
 最近更新时间：2026-04-02 16:42 UTC
 
@@ -82,7 +82,7 @@ AI写的海市蜃楼、绿闪预报
 
 ### [Milkyseas](https://lzq1206.github.io/Milkyseas/)
 
-荧光海预报
+多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。
 
 最近更新时间：2026-04-02 07:19 UTC
 

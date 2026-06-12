@@ -84,7 +84,7 @@
 
     <section class="section" id="gallery">
       <div class="section-head">
-        <div><h2>站点集合</h2><p>支持搜索与来源筛选；预览图使用网站截图服务动态生成。</p></div>
+        <div><h2>站点集合</h2><p>支持搜索与来源筛选；预览图来自独立截图仓库 `hub-previews`，便于稳定展示。</p></div>
         <p id="hint">正在读取站点数据…</p>
       </div>
       <div class="toolbar">
@@ -102,7 +102,7 @@
       <div class="empty" id="empty" hidden>没有匹配的站点。试试换个关键词。</div>
     </section>
 
-    <div class="footer">说明：简介优先使用 GitHub 仓库元数据；截图来自 thum.io 预览服务。更新站点后，重新运行 `python scripts/generate_sites.py` 即可刷新数据。🦞</div>
+    <div class="footer">说明：简介优先使用 GitHub 仓库元数据与站点内容总结；截图来自独立仓库 `hub-previews`。更新站点后，重新运行 `python scripts/generate_sites.py` 即可刷新数据。🦞</div>
   </div>
 
   <script>

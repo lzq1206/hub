@@ -18,6 +18,18 @@ API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 EXCLUDED_REPOS = {"family", "hub"}
 PREVIEW_REPO_BASE = "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots"
+INTRO_OVERRIDES = {
+    "notam-whisper": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
+    "orbitwhisper": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
+    "sunsetwhisper": "中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。",
+    "railwaystar": "中国高铁暗夜巡礼地图，面向高铁线路沿线的夜景与暗夜观测兴趣展示，适合用地图方式快速浏览线路与观测点。",
+    "webwhisper": "可匿名发帖的演示站，带有算法调控后台和虚拟内容展示，适合作为 Web 产品演示、信息流实验或互动原型页面。",
+    "quantwhisper": "EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益、持仓快照、最新调仓和比较指标，并支持 GitHub Actions 自动部署与 Telegram 汇报。",
+    "weatherwhisper": "面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。",
+    "culturalwhisper": "全国重点文物保护单位地图页，支持 KML / GeoJSON 导入、搜索、批次与省份筛选、点位详情查看和统计汇总，方便把文保名录快速落到地图上。",
+    "miragewhisper": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
+    "milkyseas": "多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。",
+}
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 # Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
@@ -100,13 +112,28 @@ def _extract_site(pages_owner: str, repo: dict) -> Site | None:
     else:
         return None
 
-    description = (repo.get("description") or "").strip() or "暂无介绍"
+    repo_name = str(repo.get("name", "")).strip()
+    description = _enrich_description(repo_name, url, (repo.get("description") or "").strip())
     return Site(
-        name=repo.get("name", "unknown"),
+        name=repo_name or "unknown",
         url=url,
         description=description,
         updated_at=_parse_updated_at(repo.get("updated_at")),
     )
+
+
+def _enrich_description(repo_name: str, url: str, base_description: str) -> str:
+    key = repo_name.strip().lower()
+    override = INTRO_OVERRIDES.get(key)
+    if override:
+        return override
+
+    host = (urlparse(url).hostname or "").replace("www.", "")
+    if base_description:
+        return base_description
+    if host.endswith("github.io"):
+        return f"这是 {repo_name} 的 GitHub Pages 站点，提供在线浏览与静态部署。"
+    return f"这是 {repo_name} 的在线主页，提供对应项目的页面与预览。"
 
 
 def _request_json(url: str, token: str | None) -> list[dict]:
