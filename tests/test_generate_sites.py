@@ -46,6 +46,10 @@ class GenerateSitesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_extra_repos("bad/repo/name")
 
+    def test_parse_extra_repos_rejects_path_traversal_in_repo_name(self):
+        with self.assertRaises(ValueError):
+            parse_extra_repos("owner/../repo")
+
     def test_fetch_sites_rejects_invalid_username(self):
         with self.assertRaises(ValueError):
             fetch_sites("bad/name")

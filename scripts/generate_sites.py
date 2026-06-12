@@ -18,7 +18,10 @@ API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
-REPO_FULL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+# Matches owner/repo where both parts are alnum-bounded and can contain underscores/hyphens in-between.
+REPO_FULL_NAME_PATTERN = re.compile(
+    r"^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+)
 
 
 @dataclass
@@ -56,14 +59,28 @@ def _parse_updated_at(value: str | None) -> dt.datetime | None:
         return None
 
 
-def _extract_site(username: str, repo: dict) -> Site | None:
+def _validate_repo_full_name(full_name: str) -> None:
+    if not REPO_FULL_NAME_PATTERN.fullmatch(full_name):
+        raise ValueError(f"Invalid repo full name format: {full_name}")
+
+
+def _extract_repo_owner(repo: dict, fallback: str) -> str:
+    owner = repo.get("owner")
+    if isinstance(owner, dict):
+        login = str(owner.get("login", "")).strip()
+        if login:
+            return login
+    return fallback
+
+
+def _extract_site(pages_owner: str, repo: dict) -> Site | None:
     homepage = (repo.get("homepage") or "").strip()
     has_pages = bool(repo.get("has_pages"))
 
     if _is_http_url(homepage):
         url = homepage
     elif has_pages:
-        url = _pages_url(username, repo.get("name", ""))
+        url = _pages_url(pages_owner, repo.get("name", ""))
     else:
         return None
 
@@ -90,8 +107,7 @@ def _request_json(url: str, token: str | None) -> list[dict]:
 
 
 def _request_repo(full_name: str, token: str | None) -> dict:
-    if not REPO_FULL_NAME_PATTERN.fullmatch(full_name):
-        raise ValueError(f"Invalid repo full name format: {full_name}")
+    _validate_repo_full_name(full_name)
 
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "hub-site-indexer"}
     if token:
@@ -111,8 +127,7 @@ def parse_extra_repos(value: str | None) -> list[str]:
         full_name = item.strip()
         if not full_name or full_name in seen:
             continue
-        if not REPO_FULL_NAME_PATTERN.fullmatch(full_name):
-            raise ValueError(f"Invalid repo full name format: {full_name}")
+        _validate_repo_full_name(full_name)
         repos.append(full_name)
         seen.add(full_name)
     return repos
@@ -138,7 +153,7 @@ def fetch_sites(
             break
 
         for repo in repos:
-            site = _extract_site(username, repo)
+            site = _extract_site(_extract_repo_owner(repo, username), repo)
             if not site or site.url in seen:
                 continue
             sites.append(site)
@@ -150,20 +165,25 @@ def fetch_sites(
         if full_name.lower() in seen_repos:
             continue
         repo = _request_repo(full_name, token)
-        site = _extract_site(username, repo)
+        site = _extract_site(_extract_repo_owner(repo, username), repo)
         if not site or site.url in seen:
             continue
         sites.append(site)
         seen.add(site.url)
 
-    sites.sort(
-        key=lambda item: (
-            item.updated_at is None,
-            -(item.updated_at.timestamp()) if item.updated_at else 0,
-            item.name.lower(),
-        )
-    )
+    sites.sort(key=_site_sort_key)
     return sites
+
+
+def _format_site_updated_at(site: Site) -> str:
+    if not site.updated_at:
+        return "最近更新时间：未知"
+    return f"最近更新时间：{site.updated_at.strftime('%Y-%m-%d %H:%M UTC')}"
+
+
+def _site_sort_key(site: Site) -> tuple[int, float, str]:
+    timestamp = site.updated_at.timestamp() if site.updated_at else 0.0
+    return (0 if site.updated_at else 1, -timestamp, site.name.lower())
 
 
 def build_markdown(username: str, sites: Iterable[Site]) -> str:
@@ -182,9 +202,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
                     "",
                     site.description,
                     "",
-                    f"最近更新时间：{site.updated_at.strftime('%Y-%m-%d %H:%M UTC')}"
-                    if site.updated_at
-                    else "最近更新时间：未知",
+                    _format_site_updated_at(site),
                     "",
                     f"![{site.name} 预览图]({preview})" if preview else "预览不可用",
                     "",
