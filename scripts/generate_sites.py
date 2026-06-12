@@ -220,10 +220,13 @@ def fetch_sites(
     page = 1
 
     while True:
-        repos = _request_json(
-            f"{API_BASE}/users/{username}/repos?per_page=100&page={page}&type=owner&sort=updated",
-            token,
-        )
+        try:
+            repos = _request_json(
+                f"{API_BASE}/users/{username}/repos?per_page=100&page={page}&type=owner&sort=updated",
+                token,
+            )
+        except Exception:
+            break
         if not repos:
             break
 
@@ -239,7 +242,10 @@ def fetch_sites(
     for full_name in extra_repos or []:
         if full_name.lower() in seen_repos:
             continue
-        repo = _request_repo(full_name, token)
+        try:
+            repo = _request_repo(full_name, token)
+        except Exception:
+            continue
         site = _extract_site(_extract_repo_owner(repo, username), repo)
         if not site or site.url in seen:
             continue

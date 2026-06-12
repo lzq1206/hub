@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 
 from scripts.generate_sites import (
     Site,
@@ -68,7 +69,7 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertEqual(title, "Demo Site")
 
     def test_build_manual_site_uses_auto_description_when_missing(self):
-        with unittest.mock.patch("scripts.generate_sites._request_text", return_value="<title>My Site</title>"):
+        with mock.patch("scripts.generate_sites._request_text", return_value="<title>My Site</title>"):
             site = _build_manual_site("https://example.com/app/")
         self.assertEqual(site.name, "My Site")
         self.assertEqual(site.description, "My Site 项目主页")
