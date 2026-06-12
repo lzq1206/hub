@@ -68,11 +68,23 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertEqual(description, "Hello world")
         self.assertEqual(title, "Demo Site")
 
+    def test_extract_page_metadata_handles_description_attribute_order(self):
+        page = '<meta content="Hello world" name="description"><title>Demo Site</title>'
+        description, title = _extract_page_metadata(page)
+        self.assertEqual(description, "Hello world")
+        self.assertEqual(title, "Demo Site")
+
     def test_build_manual_site_uses_auto_description_when_missing(self):
         with mock.patch("scripts.generate_sites._request_text", return_value="<title>My Site</title>"):
             site = _build_manual_site("https://example.com/app/")
         self.assertEqual(site.name, "My Site")
         self.assertEqual(site.description, "My Site 项目主页")
+
+    def test_build_manual_site_falls_back_when_page_unavailable(self):
+        with mock.patch("scripts.generate_sites._request_text", return_value=None):
+            site = _build_manual_site("https://example.com/app/")
+        self.assertEqual(site.name, "app")
+        self.assertEqual(site.description, "app 项目主页")
 
     def test_request_json_rejects_non_github_users_api_url(self):
         with self.assertRaises(ValueError):

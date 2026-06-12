@@ -18,6 +18,7 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
+USER_AGENT = "lzq1206-hub-site-indexer"
 DEFAULT_MANUAL_SITE_URLS = [
     "https://rocket.rainywhisper.com/",
     "https://lzq1206.github.io/WeatherWhisper/",
@@ -98,7 +99,7 @@ def _derive_site_name(url: str, title: str | None) -> str:
         return clean_title
     parsed = urlparse(url)
     slug = parsed.path.strip("/").split("/")[-1]
-    return slug or parsed.netloc
+    return slug or parsed.netloc or "unknown-site"
 
 
 def _extract_page_metadata(page_html: str) -> tuple[str | None, str | None]:
@@ -116,7 +117,7 @@ def _extract_page_metadata(page_html: str) -> tuple[str | None, str | None]:
 
 
 def _request_text(url: str) -> str | None:
-    headers = {"Accept": "text/html,*/*;q=0.8", "User-Agent": "hub-site-indexer"}
+    headers = {"Accept": "text/html,*/*;q=0.8", "User-Agent": USER_AGENT}
     request = Request(url, headers=headers)
     try:
         with urlopen(request, timeout=10) as response:
@@ -132,8 +133,10 @@ def _request_text(url: str) -> str | None:
 def _build_manual_site(url: str) -> Site:
     page_html = _request_text(url)
     description, title = _extract_page_metadata(page_html or "")
-    name = _derive_site_name(url, title)
-    auto_description = description or (f"{name} {AUTO_DESCRIPTION_SUFFIX}" if name else DEFAULT_AUTO_DESCRIPTION)
+    name = _derive_site_name(url, title).strip()
+    auto_description = (
+        (description or f"{name} {AUTO_DESCRIPTION_SUFFIX}") if name else DEFAULT_AUTO_DESCRIPTION
+    )
     return Site(name=name, url=url, description=auto_description, updated_at=None)
 
 
@@ -170,7 +173,7 @@ def _request_json(url: str, token: str | None) -> list[dict]:
     if not url.startswith(f"{API_BASE}/users/"):
         raise ValueError("Only GitHub users API URLs are allowed")
 
-    headers = {"Accept": "application/vnd.github+json", "User-Agent": "hub-site-indexer"}
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": USER_AGENT}
     if token:
         headers["Authorization"] = "Bearer " + token
 
@@ -182,7 +185,7 @@ def _request_json(url: str, token: str | None) -> list[dict]:
 def _request_repo(full_name: str, token: str | None) -> dict:
     _validate_repo_full_name(full_name)
 
-    headers = {"Accept": "application/vnd.github+json", "User-Agent": "hub-site-indexer"}
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": USER_AGENT}
     if token:
         headers["Authorization"] = "Bearer " + token
 
