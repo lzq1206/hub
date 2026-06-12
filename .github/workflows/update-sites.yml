@@ -28,7 +28,7 @@ jobs:
 
       - name: Commit changes
         run: |
-          if git diff --quiet README.md; then
+          if git diff --quiet --exit-code HEAD README.md; then
             echo "No changes to commit"
             exit 0
           fi

@@ -7,6 +7,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 from dataclasses import dataclass
 from typing import Iterable
 from urllib.parse import quote, urlparse
@@ -15,6 +16,8 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
+# GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
+USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
 
 
 @dataclass
@@ -34,7 +37,12 @@ def _is_http_url(value: str | None) -> bool:
 def _pages_url(username: str, repo_name: str) -> str:
     if repo_name.lower() == f"{username.lower()}.github.io":
         return f"https://{username}.github.io/"
-    return f"https://{username}.github.io/{repo_name}/"
+    return f"https://{username}.github.io/{quote(repo_name, safe='')}/"
+
+
+def _validate_username(username: str) -> None:
+    if not USERNAME_PATTERN.fullmatch(username):
+        raise ValueError("Invalid GitHub username format")
 
 
 def _extract_site(username: str, repo: dict) -> Site | None:
@@ -53,16 +61,20 @@ def _extract_site(username: str, repo: dict) -> Site | None:
 
 
 def _request_json(url: str, token: str | None) -> list[dict]:
+    if not url.startswith(f"{API_BASE}/users/"):
+        raise ValueError("Only GitHub users API URLs are allowed")
+
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "hub-site-indexer"}
     if token:
         headers["Authorization"] = "Bearer " + token
 
     request = Request(url, headers=headers)
-    with urlopen(request) as response:  # nosec B310 - trusted GitHub API URL
+    with urlopen(request) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
 def fetch_sites(username: str, token: str | None = None) -> list[Site]:
+    _validate_username(username)
     sites: list[Site] = []
     seen: set[str] = set()
     page = 1
@@ -88,9 +100,14 @@ def fetch_sites(username: str, token: str | None = None) -> list[Site]:
 
 
 def build_markdown(username: str, sites: Iterable[Site]) -> str:
+    _validate_username(username)
     rows: list[str] = []
     for site in sites:
-        preview = f"https://image.thum.io/get/width/640/noanimate/{quote(site.url, safe='')}"
+        preview = (
+            f"https://image.thum.io/get/width/640/noanimate/{quote(site.url, safe='')}"
+            if _is_http_url(site.url)
+            else None
+        )
         rows.append(
             "\n".join(
                 [
@@ -98,7 +115,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
                     "",
                     site.description,
                     "",
-                    f"![{site.name} 预览图]({preview})",
+                    f"![{site.name} 预览图]({preview})" if preview else "预览不可用",
                     "",
                 ]
             )

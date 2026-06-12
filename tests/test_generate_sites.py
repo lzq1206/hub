@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.generate_sites import _extract_site, _pages_url, build_markdown
+from scripts.generate_sites import Site, _extract_site, _pages_url, _request_json, build_markdown, fetch_sites
 
 
 class GenerateSitesTests(unittest.TestCase):
@@ -24,6 +24,18 @@ class GenerateSitesTests(unittest.TestCase):
         markdown = build_markdown("lzq1206", [])
         self.assertIn("自动聚合", markdown)
         self.assertIn("暂未发现已部署的网站", markdown)
+
+    def test_build_markdown_handles_non_http_url_preview(self):
+        markdown = build_markdown("lzq1206", [Site(name="local", url="ftp://local", description="desc")])
+        self.assertIn("预览不可用", markdown)
+
+    def test_fetch_sites_rejects_invalid_username(self):
+        with self.assertRaises(ValueError):
+            fetch_sites("bad/name")
+
+    def test_request_json_rejects_non_github_users_api_url(self):
+        with self.assertRaises(ValueError):
+            _request_json("https://example.com/repos", None)
 
 
 if __name__ == "__main__":
