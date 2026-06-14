@@ -4,15 +4,23 @@
 
 截图图片存放在独立仓库：[`hub-previews`](https://github.com/lzq1206/hub-previews)
 
-_最后更新：2026-06-13 06:19 UTC_
+_最后更新：2026-06-14 06:43 UTC_
 
 ## 网站列表
+
+### [MirageWhisper](https://lzq1206.github.io/MirageWhisper/)
+
+基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。
+
+最近更新时间：2026-06-14 06:37 UTC
+
+![MirageWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-miragewhisper.png)
 
 ### [OrbitWhisper](https://orbit.rainywhisper.com/)
 
 3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。
 
-最近更新时间：2026-06-13 05:02 UTC
+最近更新时间：2026-06-14 05:15 UTC
 
 ![OrbitWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/orbit-rainywhisper-com.png)
 
@@ -20,7 +28,7 @@ _最后更新：2026-06-13 06:19 UTC_
 
 面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。
 
-最近更新时间：2026-06-13 04:55 UTC
+最近更新时间：2026-06-14 05:12 UTC
 
 ![notam-whisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/rocket-rainywhisper-com.png)
 
@@ -28,7 +36,7 @@ _最后更新：2026-06-13 06:19 UTC_
 
 中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。
 
-最近更新时间：2026-06-12 16:47 UTC
+最近更新时间：2026-06-13 15:24 UTC
 
 ![SunsetWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-sunsetwhisper.png)
 
@@ -71,14 +79,6 @@ EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益�
 最近更新时间：2026-04-03 06:59 UTC
 
 ![CulturalWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-culturalwhisper.png)
-
-### [MirageWhisper](https://lzq1206.github.io/MirageWhisper/)
-
-基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。
-
-最近更新时间：2026-04-02 16:42 UTC
-
-![MirageWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-miragewhisper.png)
 
 ### [Milkyseas](https://lzq1206.github.io/Milkyseas/)
 
