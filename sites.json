@@ -1,35 +1,51 @@
 [
   {
-    "name": "OrbitWhisper",
-    "url": "https://orbit.rainywhisper.com/",
-    "description": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
-    "updated_at": "2026-06-12T03:35:19Z",
-    "slug": "orbit-rainywhisper-com",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/orbit-rainywhisper-com.png"
-  },
-  {
     "name": "notam-whisper",
     "url": "https://rocket.rainywhisper.com/",
     "description": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
-    "updated_at": "2026-06-12T02:05:58Z",
+    "updated_at": "2026-06-18T22:27:09Z",
     "slug": "rocket-rainywhisper-com",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/rocket-rainywhisper-com.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/rocket-rainywhisper-com.png"
+  },
+  {
+    "name": "OrbitWhisper",
+    "url": "https://orbit.rainywhisper.com/",
+    "description": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
+    "updated_at": "2026-06-18T21:02:35Z",
+    "slug": "orbit-rainywhisper-com",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/orbit-rainywhisper-com.png"
   },
   {
     "name": "SunsetWhisper",
     "url": "https://lzq1206.github.io/SunsetWhisper/",
     "description": "中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。",
-    "updated_at": "2026-06-11T17:28:56Z",
+    "updated_at": "2026-06-18T16:47:12Z",
     "slug": "lzq1206-github-io-sunsetwhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-sunsetwhisper.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-sunsetwhisper.png"
+  },
+  {
+    "name": "MirageWhisper",
+    "url": "https://lzq1206.github.io/MirageWhisper/",
+    "description": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
+    "updated_at": "2026-06-15T02:55:36Z",
+    "slug": "lzq1206-github-io-miragewhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-miragewhisper.png"
+  },
+  {
+    "name": "WeatherWhisper",
+    "url": "https://lzq1206.github.io/WeatherWhisper/",
+    "description": "面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。",
+    "updated_at": "2026-06-15T02:54:20Z",
+    "slug": "lzq1206-github-io-weatherwhisper",
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-weatherwhisper.png"
   },
   {
     "name": "railwaystar",
     "url": "https://lzq1206.github.io/railwaystar/",
     "description": "中国高铁暗夜巡礼地图，面向高铁线路沿线的夜景与暗夜观测兴趣展示，适合用地图方式快速浏览线路与观测点。",
-    "updated_at": "2026-05-20T15:53:21Z",
+    "updated_at": "2026-06-15T02:53:38Z",
     "slug": "lzq1206-github-io-railwaystar",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-railwaystar.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-railwaystar.png"
   },
   {
     "name": "webwhisper",
@@ -37,7 +53,7 @@
     "description": "可匿名发帖的演示站，带有算法调控后台和虚拟内容展示，适合作为 Web 产品演示、信息流实验或互动原型页面。",
     "updated_at": "2026-04-28T02:27:56Z",
     "slug": "lzq1206-github-io-webwhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-webwhisper.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-webwhisper.png"
   },
   {
     "name": "QuantWhisper",
@@ -45,15 +61,7 @@
     "description": "EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益、持仓快照、最新调仓和比较指标，并支持 GitHub Actions 自动部署与 Telegram 汇报。",
     "updated_at": "2026-04-28T02:24:06Z",
     "slug": "lzq1206-github-io-quantwhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-quantwhisper.png"
-  },
-  {
-    "name": "WeatherWhisper",
-    "url": "https://lzq1206.github.io/WeatherWhisper/",
-    "description": "面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。",
-    "updated_at": "2026-04-03T07:49:39Z",
-    "slug": "lzq1206-github-io-weatherwhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-weatherwhisper.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-quantwhisper.png"
   },
   {
     "name": "CulturalWhisper",
@@ -61,15 +69,7 @@
     "description": "全国重点文物保护单位地图页，支持 KML / GeoJSON 导入、搜索、批次与省份筛选、点位详情查看和统计汇总，方便把文保名录快速落到地图上。",
     "updated_at": "2026-04-03T06:59:17Z",
     "slug": "lzq1206-github-io-culturalwhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-culturalwhisper.png"
-  },
-  {
-    "name": "MirageWhisper",
-    "url": "https://lzq1206.github.io/MirageWhisper/",
-    "description": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
-    "updated_at": "2026-04-02T16:42:05Z",
-    "slug": "lzq1206-github-io-miragewhisper",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-miragewhisper.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-culturalwhisper.png"
   },
   {
     "name": "Milkyseas",
@@ -77,6 +77,6 @@
     "description": "多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。",
     "updated_at": "2026-04-02T07:19:53Z",
     "slug": "lzq1206-github-io-milkyseas",
-    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-milkyseas.png"
+    "preview_url": "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-milkyseas.png"
   }
 ]

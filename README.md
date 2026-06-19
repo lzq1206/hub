@@ -2,35 +2,35 @@
 
 自动聚合 [@lzq1206](https://github.com/lzq1206) 及附加仓库的已部署网站地址、简介与预览。
 
-截图图片存放在独立仓库：[`hub-previews`](https://github.com/lzq1206/hub-previews)
+截图图片存放在本仓库的 `screenshots/` 目录中
 
-_最后更新：2026-06-18 06:55 UTC_
+_最后更新：2026-06-19 01:42 UTC_
 
 ## 网站列表
-
-### [OrbitWhisper](https://orbit.rainywhisper.com/)
-
-3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。
-
-最近更新时间：2026-06-18 05:16 UTC
-
-![OrbitWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/orbit-rainywhisper-com.png)
 
 ### [notam-whisper](https://rocket.rainywhisper.com/)
 
 面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。
 
-最近更新时间：2026-06-18 05:07 UTC
+最近更新时间：2026-06-18 22:27 UTC
 
-![notam-whisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/rocket-rainywhisper-com.png)
+![notam-whisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/rocket-rainywhisper-com.png)
+
+### [OrbitWhisper](https://orbit.rainywhisper.com/)
+
+3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。
+
+最近更新时间：2026-06-18 21:02 UTC
+
+![OrbitWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/orbit-rainywhisper-com.png)
 
 ### [SunsetWhisper](https://lzq1206.github.io/SunsetWhisper/)
 
 中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。
 
-最近更新时间：2026-06-17 17:04 UTC
+最近更新时间：2026-06-18 16:47 UTC
 
-![SunsetWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-sunsetwhisper.png)
+![SunsetWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-sunsetwhisper.png)
 
 ### [MirageWhisper](https://lzq1206.github.io/MirageWhisper/)
 
@@ -38,7 +38,7 @@ _最后更新：2026-06-18 06:55 UTC_
 
 最近更新时间：2026-06-15 02:55 UTC
 
-![MirageWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-miragewhisper.png)
+![MirageWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-miragewhisper.png)
 
 ### [WeatherWhisper](https://lzq1206.github.io/WeatherWhisper/)
 
@@ -46,7 +46,7 @@ _最后更新：2026-06-18 06:55 UTC_
 
 最近更新时间：2026-06-15 02:54 UTC
 
-![WeatherWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-weatherwhisper.png)
+![WeatherWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-weatherwhisper.png)
 
 ### [railwaystar](https://lzq1206.github.io/railwaystar/)
 
@@ -54,7 +54,7 @@ _最后更新：2026-06-18 06:55 UTC_
 
 最近更新时间：2026-06-15 02:53 UTC
 
-![railwaystar 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-railwaystar.png)
+![railwaystar 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-railwaystar.png)
 
 ### [webwhisper](https://lzq1206.github.io/webwhisper/)
 
@@ -62,7 +62,7 @@ _最后更新：2026-06-18 06:55 UTC_
 
 最近更新时间：2026-04-28 02:27 UTC
 
-![webwhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-webwhisper.png)
+![webwhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-webwhisper.png)
 
 ### [QuantWhisper](https://lzq1206.github.io/QuantWhisper/)
 
@@ -70,7 +70,7 @@ EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益�
 
 最近更新时间：2026-04-28 02:24 UTC
 
-![QuantWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-quantwhisper.png)
+![QuantWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-quantwhisper.png)
 
 ### [CulturalWhisper](https://lzq1206.github.io/CulturalWhisper/)
 
@@ -78,7 +78,7 @@ EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益�
 
 最近更新时间：2026-04-03 06:59 UTC
 
-![CulturalWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-culturalwhisper.png)
+![CulturalWhisper 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-culturalwhisper.png)
 
 ### [Milkyseas](https://lzq1206.github.io/Milkyseas/)
 
@@ -86,5 +86,5 @@ EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益�
 
 最近更新时间：2026-04-02 07:19 UTC
 
-![Milkyseas 预览图](https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots/lzq1206-github-io-milkyseas.png)
+![Milkyseas 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-milkyseas.png)
 

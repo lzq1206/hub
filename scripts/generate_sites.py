@@ -17,7 +17,7 @@ from urllib.request import Request, urlopen
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 EXCLUDED_REPOS = {"family", "hub"}
-PREVIEW_REPO_BASE = "https://raw.githubusercontent.com/lzq1206/hub-previews/main/screenshots"
+PREVIEW_REPO_BASE = "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots"
 INTRO_OVERRIDES = {
     "notam-whisper": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
     "orbitwhisper": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
@@ -262,7 +262,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
             "",
             f"自动聚合 [@{username}](https://github.com/{username}) 及附加仓库的已部署网站地址、简介与预览。",
             "",
-            "截图图片存放在独立仓库：[`hub-previews`](https://github.com/lzq1206/hub-previews)",
+            "截图图片存放在本仓库的 `screenshots/` 目录中",
             "",
             f"_最后更新：{now}_",
             "",
