@@ -4,6 +4,10 @@
 
 截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）
 
+手动更新截图命令（会等待页面加载后再截图）：
+
+`python scripts/update_screenshots.py`
+
 _最后更新：2026-07-17 08:18 UTC_
 
 ## 网站列表
