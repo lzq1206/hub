@@ -2,7 +2,7 @@
 
 自动聚合 [@lzq1206](https://github.com/lzq1206) 及附加仓库的已部署网站地址、简介与预览。
 
-截图图片存放在本仓库的 `screenshots/` 目录中
+截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）
 
 _最后更新：2026-07-17 08:18 UTC_
 
@@ -87,4 +87,3 @@ EXP-0004 虚拟组合看板，展示每日净值、基准对比、月度收益�
 最近更新时间：2026-04-02 07:19 UTC
 
 ![Milkyseas 预览图](https://raw.githubusercontent.com/lzq1206/hub/main/screenshots/lzq1206-github-io-milkyseas.png)
-
