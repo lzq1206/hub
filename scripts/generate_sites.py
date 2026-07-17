@@ -262,7 +262,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
             "",
             f"自动聚合 [@{username}](https://github.com/{username}) 及附加仓库的已部署网站地址、简介与预览。",
             "",
-            "截图图片存放在本仓库的 `screenshots/` 目录中",
+            "截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）",
             "",
             f"_最后更新：{now}_",
             "",
