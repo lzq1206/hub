@@ -17,7 +17,9 @@ from urllib.request import Request, urlopen
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 EXCLUDED_REPOS = {"family", "hub"}
-PREVIEW_REPO_BASE = "https://raw.githubusercontent.com/lzq1206/hub/main/screenshots"
+# Keep preview images in this Pages repository.  Same-origin paths remain
+# available when raw.githubusercontent.com is unavailable or filtered.
+PREVIEW_PATH_PREFIX = "screenshots"
 INTRO_OVERRIDES = {
     "notam-whisper": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
     "orbitwhisper": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
@@ -67,6 +69,11 @@ def _site_slug(url: str) -> str:
         path = re.sub(r"[^a-zA-Z0-9]+", "-", path).strip("-").lower()
         return f"{host.replace('.', '-')}-{path}".lower()
     return host.replace('.', '-').lower()
+
+
+def _preview_path(url: str) -> str:
+    """Return the manually maintained, same-origin cover path for a site."""
+    return f"{PREVIEW_PATH_PREFIX}/{_site_slug(url)}.png"
 
 
 def _validate_username(username: str) -> None:
@@ -234,7 +241,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
     rows: list[str] = []
     for site in sites:
         preview = (
-            f"{PREVIEW_REPO_BASE}/{_site_slug(site.url)}.png"
+            _preview_path(site.url)
             if _is_http_url(site.url)
             else None
         )
@@ -282,7 +289,7 @@ def build_sites_json(sites: Iterable[Site]) -> str:
             "description": site.description,
             "updated_at": site.updated_at.strftime("%Y-%m-%dT%H:%M:%SZ") if site.updated_at else None,
             "slug": _site_slug(site.url),
-            "preview_url": f"{PREVIEW_REPO_BASE}/{_site_slug(site.url)}.png",
+            "preview_url": _preview_path(site.url),
         }
         for site in sites
     ]
