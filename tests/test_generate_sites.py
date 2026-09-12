@@ -26,6 +26,13 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertEqual(site.url, "https://lzq1206.github.io/demo/")
         self.assertIn("GitHub Pages 站点", site.description)
 
+    def test_extract_site_uses_canonical_custom_domain_override(self):
+        repo = {"name": "Poetry-Whisper", "homepage": "https://lzq1206.github.io/Poetry-Whisper/", "has_pages": True}
+        site = _extract_site("lzq1206", repo)
+        self.assertIsNotNone(site)
+        self.assertEqual(site.url, "https://poetry.rainywhisper.com/")
+        self.assertIn("古典诗词", site.description)
+
     def test_pages_url_for_user_site(self):
         self.assertEqual(_pages_url("lzq1206", "lzq1206.github.io"), "https://lzq1206.github.io/")
 

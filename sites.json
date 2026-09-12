@@ -3,7 +3,7 @@
     "name": "notam-whisper",
     "url": "https://rocket.rainywhisper.com/",
     "description": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
-    "updated_at": "2026-06-18T22:27:09Z",
+    "updated_at": "2026-09-12T01:45:44Z",
     "slug": "rocket-rainywhisper-com",
     "preview_url": "screenshots/rocket-rainywhisper-com.png"
   },
@@ -11,7 +11,7 @@
     "name": "OrbitWhisper",
     "url": "https://orbit.rainywhisper.com/",
     "description": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
-    "updated_at": "2026-06-18T21:02:35Z",
+    "updated_at": "2026-09-11T21:09:31Z",
     "slug": "orbit-rainywhisper-com",
     "preview_url": "screenshots/orbit-rainywhisper-com.png"
   },
@@ -19,9 +19,25 @@
     "name": "SunsetWhisper",
     "url": "https://sunset.rainywhisper.com/",
     "description": "中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。",
-    "updated_at": "2026-06-18T16:47:12Z",
+    "updated_at": "2026-09-11T17:24:28Z",
     "slug": "sunset-rainywhisper-com",
     "preview_url": "screenshots/sunset-rainywhisper-com.png"
+  },
+  {
+    "name": "Poetry-Whisper",
+    "url": "https://poetry.rainywhisper.com/",
+    "description": "古典诗词格律写作助手，围绕格律校验、词牌与意象提示提供交互式创作支持，帮助把灵感整理成更合乎传统韵律的诗词作品。",
+    "updated_at": "2026-07-18T18:29:40Z",
+    "slug": "poetry-rainywhisper-com",
+    "preview_url": "screenshots/poetry-rainywhisper-com.png"
+  },
+  {
+    "name": "WeatherWhisper",
+    "url": "https://climate.rainywhisper.com/",
+    "description": "面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。",
+    "updated_at": "2026-07-17T06:29:54Z",
+    "slug": "climate-rainywhisper-com",
+    "preview_url": "screenshots/climate-rainywhisper-com.png"
   },
   {
     "name": "MirageWhisper",
@@ -30,14 +46,6 @@
     "updated_at": "2026-06-15T02:55:36Z",
     "slug": "mirage-rainywhisper-com",
     "preview_url": "screenshots/mirage-rainywhisper-com.png"
-  },
-  {
-    "name": "WeatherWhisper",
-    "url": "https://climate.rainywhisper.com/",
-    "description": "面向中国主要城市的气候可视化站，采用 WeatherSpark 风格展示年内温度、降水、湿度、风、云量和旅游建议，并支持地图选站与月度细节浏览。",
-    "updated_at": "2026-06-15T02:54:20Z",
-    "slug": "climate-rainywhisper-com",
-    "preview_url": "screenshots/climate-rainywhisper-com.png"
   },
   {
     "name": "railwaystar",

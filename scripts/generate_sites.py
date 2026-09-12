@@ -21,6 +21,7 @@ EXCLUDED_REPOS = {"family", "hub"}
 # available when raw.githubusercontent.com is unavailable or filtered.
 PREVIEW_PATH_PREFIX = "screenshots"
 INTRO_OVERRIDES = {
+    "poetry-whisper": "古典诗词格律写作助手，围绕格律校验、词牌与意象提示提供交互式创作支持，帮助把灵感整理成更合乎传统韵律的诗词作品。",
     "notam-whisper": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
     "orbitwhisper": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
     "sunsetwhisper": "中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。",
@@ -31,6 +32,21 @@ INTRO_OVERRIDES = {
     "culturalwhisper": "全国重点文物保护单位地图页，支持 KML / GeoJSON 导入、搜索、批次与省份筛选、点位详情查看和统计汇总，方便把文保名录快速落到地图上。",
     "miragewhisper": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
     "milkyseas": "多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。",
+}
+# Some repositories retain a GitHub Pages homepage while their public site has
+# moved to a custom domain. Keep these canonical links stable across refreshes.
+SITE_URL_OVERRIDES = {
+    "notam-whisper": "https://rocket.rainywhisper.com/",
+    "orbitwhisper": "https://orbit.rainywhisper.com/",
+    "sunsetwhisper": "https://sunset.rainywhisper.com/",
+    "miragewhisper": "https://mirage.rainywhisper.com/",
+    "weatherwhisper": "https://climate.rainywhisper.com/",
+    "railwaystar": "https://railwaystar.rainywhisper.com/",
+    "webwhisper": "https://web.rainywhisper.com/",
+    "quantwhisper": "https://quant.rainywhisper.com/",
+    "culturalwhisper": "https://cultural.rainywhisper.com/",
+    "milkyseas": "https://milkyseas.rainywhisper.com/",
+    "poetry-whisper": "https://poetry.rainywhisper.com/",
 }
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")
@@ -109,7 +125,7 @@ def _extract_site(pages_owner: str, repo: dict) -> Site | None:
     if repo_name in EXCLUDED_REPOS:
         return None
 
-    homepage = (repo.get("homepage") or "").strip()
+    homepage = SITE_URL_OVERRIDES.get(repo_name, (repo.get("homepage") or "").strip())
     has_pages = bool(repo.get("has_pages"))
 
     if _is_http_url(homepage):
@@ -275,7 +291,7 @@ def build_markdown(username: str, sites: Iterable[Site]) -> str:
             "",
             "## 网站列表",
             "",
-            content,
+            content.rstrip(),
             "",
         ]
     )
