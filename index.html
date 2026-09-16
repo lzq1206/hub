@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#008080" />
   <title>hub｜Rainy Whisper 网站集合</title>
   <meta name="description" content="自动聚合已部署的网站地址、简介与预览截图。" />
   <style>
@@ -58,9 +59,57 @@
     .footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.8}.empty{padding:26px;border-radius:20px;border:1px dashed rgba(255,255,255,.16);color:var(--muted);text-align:center;background:rgba(255,255,255,.03)}
     @media (max-width:980px){.hero-grid,.toolbar{grid-template-columns:1fr}.filters{justify-content:flex-start}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:640px){.wrap{padding:14px}.hero{padding:18px;border-radius:24px}.section{padding:14px;border-radius:22px}.stats{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+
+    /* Keep the hub layout and copy intact while borrowing RetroWhisper's
+       switchable 8-bit, Windows 98, and Vista Aero visual language. */
+    .era-switcher{position:fixed;right:24px;bottom:24px;z-index:15;display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);border-radius:12px;background:rgba(13,25,35,.88);box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+    .era-switcher-title{color:var(--muted);font:700 10px/1 "Courier New",monospace;letter-spacing:.08em;white-space:nowrap}
+    .era-options{display:flex;gap:4px}.era-option{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);font:700 10px/1 "Courier New",monospace;white-space:nowrap;cursor:pointer}
+    .era-option:hover,.era-option.is-selected{border-color:var(--line-strong);color:var(--text);background:rgba(255,255,255,.08)}
+    .era-swatch{display:block;width:13px;height:13px;border:1px solid currentColor;border-radius:3px}.swatch-pixel{color:#d7f64a;background-color:#171a3c;background-image:linear-gradient(90deg,#d7f64a 0 3px,transparent 3px 6px),linear-gradient(#ff7a70 0 3px,transparent 3px 6px);background-size:6px 6px}.swatch-win98{color:#fff;background:linear-gradient(135deg,#000080 0 48%,#c0c0c0 49% 100%)}.swatch-vista{color:#fff;background:linear-gradient(145deg,#e9ffff,#77bad6 50%,#55aa7b)}
+
+    body[data-style="win98"]{--bg0:#008080;--bg1:#008080;--bg2:#008080;--card:#c0c0c0;--line:#808080;--text:#000;--muted:#333;--soft:#000;--accent:#000080;--accent2:#800000;--accent3:#008000;--shadow:4px 4px 0 rgba(0,0,0,.55);--radius:0px;background-color:#008080;background-image:radial-gradient(rgba(255,255,255,.12) .7px,transparent .8px);background-size:4px 4px;font-family:"MS Sans Serif","Microsoft Sans Serif",Tahoma,"PingFang SC",sans-serif}
+    body[data-style="win98"] .hero,body[data-style="win98"] .section,body[data-style="win98"] .stat,body[data-style="win98"] .card,body[data-style="win98"] .search,body[data-style="win98"] .era-switcher,body[data-style="win98"] .empty{border:2px outset #fff;border-radius:0;background:#c0c0c0;box-shadow:4px 4px 0 #000;backdrop-filter:none}
+    body[data-style="win98"] .hero{background:#c0c0c0}
+    body[data-style="win98"] .eyebrow,body[data-style="win98"] .btn,body[data-style="win98"] .chip,body[data-style="win98"] .ghost,body[data-style="win98"] .tag,body[data-style="win98"] .era-option{border:2px outset #fff;border-radius:0;background:#c0c0c0;color:#000080}
+    body[data-style="win98"] .eyebrow{color:#800000}
+    body[data-style="win98"] .btn:hover,body[data-style="win98"] .chip:hover,body[data-style="win98"] .ghost:hover,body[data-style="win98"] .era-option:hover,body[data-style="win98"] .era-option.is-selected{transform:none;border-color:#fff;background:#000080;color:#fff}
+    body[data-style="win98"] .chip.active,body[data-style="win98"] .ghost.primary{border-style:inset;background:#000080;color:#fff}
+    body[data-style="win98"] .section-head p,body[data-style="win98"] .stat .k,body[data-style="win98"] .stat .d,body[data-style="win98"] .title .mini,body[data-style="win98"] .footer{color:#333}
+    body[data-style="win98"] .stat .v,body[data-style="win98"] h1,body[data-style="win98"] .section-head h2,body[data-style="win98"] .title h3{letter-spacing:0}
+    body[data-style="win98"] .search{background:#fff}
+    body[data-style="win98"] .search input{color:#000}
+    body[data-style="win98"] .filters{gap:6px}body[data-style="win98"] .card{overflow:hidden;background:#c0c0c0}body[data-style="win98"] .card:hover{transform:none}
+    body[data-style="win98"] .shot{background:#000080}body[data-style="win98"] .shot::after{background:linear-gradient(180deg,transparent,rgba(0,0,0,.48))}body[data-style="win98"] .shot img{image-rendering:pixelated}
+    body[data-style="win98"] .badge{border:1px solid #fff;border-radius:0;background:#000080;color:#fff;backdrop-filter:none}body[data-style="win98"] .summary{color:#222}body[data-style="win98"] .tag{background:#d4d0c8;color:#000080}body[data-style="win98"] code{background:#d4d0c8;color:#000080}
+
+    body[data-style="pixel"]{--bg0:#12162e;--bg1:#12162e;--bg2:#12162e;--card:#1c2144;--line:#4f5a8c;--text:#f7f0da;--muted:#a8acc6;--soft:#d7d9ea;--accent:#d7f64a;--accent2:#ff7a70;--accent3:#70e7d5;--shadow:5px 5px 0 #090b1a;--radius:0px;background-color:#12162e;background-image:linear-gradient(90deg,rgba(215,246,74,.18) 0 2px,transparent 2px 8px),linear-gradient(rgba(215,246,74,.12) 0 2px,transparent 2px 8px);background-size:8px 8px;font-family:"Courier New","MS Gothic",monospace}
+    body[data-style="pixel"] .hero,body[data-style="pixel"] .section,body[data-style="pixel"] .stat,body[data-style="pixel"] .card,body[data-style="pixel"] .search,body[data-style="pixel"] .era-switcher,body[data-style="pixel"] .empty{border:3px solid var(--line);border-radius:0;background:#1c2144;box-shadow:5px 5px 0 #090b1a;backdrop-filter:none}
+    body[data-style="pixel"] .hero{background:#1c2144}
+    body[data-style="pixel"] h1,body[data-style="pixel"] .section-head h2,body[data-style="pixel"] .title h3{letter-spacing:0}body[data-style="pixel"] .eyebrow,body[data-style="pixel"] .btn,body[data-style="pixel"] .chip,body[data-style="pixel"] .ghost,body[data-style="pixel"] .tag,body[data-style="pixel"] .era-option{border:2px solid var(--line);border-radius:0;background:#1c2144;color:var(--soft)}
+    body[data-style="pixel"] .eyebrow,body[data-style="pixel"] .section-head h2{color:var(--accent)}body[data-style="pixel"] .btn:hover,body[data-style="pixel"] .chip:hover,body[data-style="pixel"] .ghost:hover,body[data-style="pixel"] .era-option:hover,body[data-style="pixel"] .era-option.is-selected{transform:none;border-color:var(--accent);background:#252b54;color:var(--accent)}
+    body[data-style="pixel"] .chip.active,body[data-style="pixel"] .ghost.primary{border-color:var(--accent);background:var(--accent);color:#12162e}body[data-style="pixel"] .search{background:#1c2144}body[data-style="pixel"] .search input{color:var(--text)}body[data-style="pixel"] .card{background:#1c2144}body[data-style="pixel"] .card:hover{transform:none;border-color:var(--accent)}
+    body[data-style="pixel"] .shot{background:#252b54}body[data-style="pixel"] .shot::after{background-image:linear-gradient(90deg,rgba(215,246,74,.15) 0 2px,transparent 2px 6px),linear-gradient(rgba(255,122,112,.1) 0 2px,transparent 2px 6px);background-size:6px 6px}body[data-style="pixel"] .shot img{image-rendering:pixelated;filter:saturate(.8) contrast(1.15)}
+    body[data-style="pixel"] .badge{border:2px solid var(--accent);border-radius:0;background:#12162e;color:var(--accent);backdrop-filter:none}body[data-style="pixel"] .summary{color:var(--muted-strong)}body[data-style="pixel"] .tag{background:#252b54;color:var(--accent3)}body[data-style="pixel"] code{background:#252b54;color:var(--accent)}
+
+    body[data-style="vista"]{--bg0:#9bd8f6;--bg1:#e9f8ff;--bg2:#8dd19d;--card:rgba(241,252,255,.62);--line:rgba(255,255,255,.72);--text:#15364b;--muted:#4a6b7d;--soft:#244b62;--accent:#126091;--accent2:#c85d80;--accent3:#43a3b9;--shadow:0 18px 44px rgba(38,92,119,.26),inset 0 1px 0 rgba(255,255,255,.8);--radius:18px;background:radial-gradient(circle at 76% 8%,rgba(255,255,255,.82),transparent 22rem),radial-gradient(circle at 9% 30%,rgba(255,255,255,.55),transparent 18rem),linear-gradient(180deg,#9bd8f6 0%,#e9f8ff 45%,#8dd19d 100%);background-attachment:fixed;font-family:"Segoe UI","Trebuchet MS","PingFang SC",sans-serif}
+    body[data-style="vista"] .hero,body[data-style="vista"] .section,body[data-style="vista"] .stat,body[data-style="vista"] .card,body[data-style="vista"] .search,body[data-style="vista"] .era-switcher,body[data-style="vista"] .empty{border:1px solid rgba(255,255,255,.82);border-radius:var(--radius);background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(191,235,250,.48) 50%,rgba(117,193,211,.38));box-shadow:var(--shadow);backdrop-filter:blur(14px) saturate(1.15)}
+    body[data-style="vista"] .hero{background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(176,226,245,.54) 50%,rgba(113,190,207,.38))}body[data-style="vista"] .eyebrow,body[data-style="vista"] .btn,body[data-style="vista"] .chip,body[data-style="vista"] .ghost,body[data-style="vista"] .tag,body[data-style="vista"] .era-option{border:1px solid rgba(255,255,255,.66);border-radius:10px;background:rgba(255,255,255,.26);color:#315e72;box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}
+    body[data-style="vista"] .eyebrow,body[data-style="vista"] .section-head h2{color:#126091;text-shadow:0 1px #fff}body[data-style="vista"] .btn:hover,body[data-style="vista"] .chip:hover,body[data-style="vista"] .ghost:hover,body[data-style="vista"] .era-option:hover,body[data-style="vista"] .era-option.is-selected{transform:translateY(-1px);border-color:rgba(255,255,255,.98);background:rgba(255,255,255,.52);color:#126091}body[data-style="vista"] .chip.active,body[data-style="vista"] .ghost.primary{background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(108,190,215,.62));color:#124f6c}
+    body[data-style="vista"] .section-head p,body[data-style="vista"] .stat .k,body[data-style="vista"] .stat .d,body[data-style="vista"] .title .mini,body[data-style="vista"] .footer{color:#315e72}body[data-style="vista"] .search{background:rgba(255,255,255,.48)}body[data-style="vista"] .search:focus-within{border-color:rgba(18,96,145,.56);background:rgba(255,255,255,.72)}body[data-style="vista"] .search input{color:#15364b}
+    body[data-style="vista"] .card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.98);box-shadow:0 22px 48px rgba(37,104,130,.31),inset 0 1px 0 #fff}body[data-style="vista"] .shot{background:linear-gradient(145deg,#dffaff,#7fc5dc 50%,#65ad87)}body[data-style="vista"] .shot::after{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(18,75,101,.5))}body[data-style="vista"] .badge{border:1px solid rgba(255,255,255,.78);border-radius:999px;background:rgba(15,74,103,.42);color:#fff;box-shadow:inset 0 1px rgba(255,255,255,.46),0 3px 10px rgba(30,97,119,.22);backdrop-filter:blur(8px)}body[data-style="vista"] .summary{color:#315e72}body[data-style="vista"] .tag{background:rgba(255,255,255,.32);color:#2c7897}body[data-style="vista"] code{background:rgba(255,255,255,.38);color:#126091}
+    @media (max-width:640px){.era-switcher{right:13px;bottom:13px}.era-switcher-title{display:none}.era-option{padding:8px}}
   </style>
 </head>
-<body>
+<body data-style="win98">
+  <aside class="era-switcher" aria-label="切换时代">
+    <span class="era-switcher-title">切换时代</span>
+    <div class="era-options">
+      <button class="era-option" type="button" data-style-option="pixel" aria-pressed="false" aria-label="像素终端 1980s" title="像素终端 1980s"><span class="era-swatch swatch-pixel" aria-hidden="true"></span><span>像素</span></button>
+      <button class="era-option is-selected" type="button" data-style-option="win98" aria-pressed="true" aria-label="Win 98 1990s" title="Win 98 1990s"><span class="era-swatch swatch-win98" aria-hidden="true"></span><span>Win 98</span></button>
+      <button class="era-option" type="button" data-style-option="vista" aria-pressed="false" aria-label="Vista 玻璃 2000s" title="Vista 玻璃 2000s"><span class="era-swatch swatch-vista" aria-hidden="true"></span><span>Aero</span></button>
+    </div>
+  </aside>
   <div class="wrap">
     <section class="hero">
       <div class="hero-grid">
@@ -113,8 +162,27 @@
     const siteCount = document.getElementById('siteCount');
     const sourceCount = document.getElementById('sourceCount');
     const chips = [...document.querySelectorAll('.chip[data-filter]')];
+    const styleOptions = [...document.querySelectorAll('[data-style-option]')];
     let activeFilter = 'all';
     let sites = [];
+
+    const loadStyle = () => {
+      try { return localStorage.getItem('hub-style-v1') || 'win98'; } catch { return 'win98'; }
+    };
+
+    const setStyle = style => {
+      const nextStyle = ['pixel', 'win98', 'vista'].includes(style) ? style : 'win98';
+      document.documentElement.dataset.style = nextStyle;
+      document.body.dataset.style = nextStyle;
+      styleOptions.forEach(button => {
+        const selected = button.dataset.styleOption === nextStyle;
+        button.classList.toggle('is-selected', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      const themeColor = nextStyle === 'win98' ? '#008080' : nextStyle === 'vista' ? '#bdeeff' : '#12162e';
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
+      try { localStorage.setItem('hub-style-v1', nextStyle); } catch { /* Private browsing can disable storage. */ }
+    };
 
     const esc = s => String(s || '')
       .replace(/&/g, '&amp;')
@@ -188,7 +256,9 @@
       activeFilter = btn.dataset.filter || 'all';
       render();
     }));
+    styleOptions.forEach(btn => btn.addEventListener('click', () => setStyle(btn.dataset.styleOption)));
     search.addEventListener('input', render);
+    setStyle(loadStyle());
     init();
   </script>
 </body>

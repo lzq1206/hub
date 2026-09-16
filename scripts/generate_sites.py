@@ -21,6 +21,8 @@ EXCLUDED_REPOS = {"family", "hub"}
 # available when raw.githubusercontent.com is unavailable or filtered.
 PREVIEW_PATH_PREFIX = "screenshots"
 INTRO_OVERRIDES = {
+    "aiweb": "AI 小项目灵感库，聚合值得打开的开源工具、界面实验与 Vibe Coding 项目。",
+    "retrowhisper": "复古游戏、模拟器与像素工具目录，按复古主题整理值得保存的开源项目。",
     "poetry-whisper": "古典诗词格律写作助手，围绕格律校验、词牌与意象提示提供交互式创作支持，帮助把灵感整理成更合乎传统韵律的诗词作品。",
     "notam-whisper": "面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。",
     "orbitwhisper": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",
@@ -36,6 +38,8 @@ INTRO_OVERRIDES = {
 # Some repositories retain a GitHub Pages homepage while their public site has
 # moved to a custom domain. Keep these canonical links stable across refreshes.
 SITE_URL_OVERRIDES = {
+    "aiweb": "https://aiweb.rainywhisper.com/",
+    "retrowhisper": "https://retro.rainywhisper.com/",
     "notam-whisper": "https://rocket.rainywhisper.com/",
     "orbitwhisper": "https://orbit.rainywhisper.com/",
     "sunsetwhisper": "https://sunset.rainywhisper.com/",

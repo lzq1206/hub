@@ -4,15 +4,31 @@
 
 截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）
 
-_最后更新：2026-09-12 02:40 UTC_
+_最后更新：2026-09-16 10:43 UTC_
 
 ## 网站列表
+
+### [RetroWhisper](https://retro.rainywhisper.com/)
+
+复古游戏、模拟器与像素工具目录，按复古主题整理值得保存的开源项目。
+
+最近更新时间：2026-09-16 10:30 UTC
+
+![RetroWhisper 预览图](screenshots/retro-rainywhisper-com.png)
+
+### [AIWeb](https://aiweb.rainywhisper.com/)
+
+AI 小项目灵感库，聚合值得打开的开源工具、界面实验与 Vibe Coding 项目。
+
+最近更新时间：2026-09-16 08:59 UTC
+
+![AIWeb 预览图](screenshots/aiweb-rainywhisper-com.png)
 
 ### [notam-whisper](https://rocket.rainywhisper.com/)
 
 面向火箭发射观测的 NOTAM / MSI / NavWarnings 聚合器，会自动抓取、过滤并整理航空与航海通告，导出 CSV 和 KML 供地图与 Google Earth 查看，适合快速判断发射窗口附近的通告影响。
 
-最近更新时间：2026-09-12 01:45 UTC
+最近更新时间：2026-09-16 07:59 UTC
 
 ![notam-whisper 预览图](screenshots/rocket-rainywhisper-com.png)
 
@@ -20,7 +36,7 @@ _最后更新：2026-09-12 02:40 UTC_
 
 3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。
 
-最近更新时间：2026-09-11 21:09 UTC
+最近更新时间：2026-09-16 05:04 UTC
 
 ![OrbitWhisper 预览图](screenshots/orbit-rainywhisper-com.png)
 
@@ -28,7 +44,7 @@ _最后更新：2026-09-12 02:40 UTC_
 
 中国主要城市朝霞 / 晚霞预报页，基于分层云量、湿度、气溶胶与太阳路径判断观测机会，每日自动生成静态数据并部署到 GitHub Pages。
 
-最近更新时间：2026-09-11 17:24 UTC
+最近更新时间：2026-09-15 17:55 UTC
 
 ![SunsetWhisper 预览图](screenshots/sunset-rainywhisper-com.png)
 

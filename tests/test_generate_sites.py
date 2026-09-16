@@ -33,6 +33,16 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertEqual(site.url, "https://poetry.rainywhisper.com/")
         self.assertIn("古典诗词", site.description)
 
+    def test_extract_site_uses_aiweb_custom_domain_override(self):
+        site = _extract_site("lzq1206", {"name": "AIWeb", "has_pages": False})
+        self.assertIsNotNone(site)
+        self.assertEqual(site.url, "https://aiweb.rainywhisper.com/")
+
+    def test_extract_site_uses_retrowhisper_custom_domain_override(self):
+        site = _extract_site("lzq1206", {"name": "RetroWhisper", "has_pages": False})
+        self.assertIsNotNone(site)
+        self.assertEqual(site.url, "https://retro.rainywhisper.com/")
+
     def test_pages_url_for_user_site(self):
         self.assertEqual(_pages_url("lzq1206", "lzq1206.github.io"), "https://lzq1206.github.io/")
 
