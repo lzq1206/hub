@@ -17,6 +17,24 @@ from urllib.request import Request, urlopen
 API_BASE = "https://api.github.com"
 DEFAULT_USERNAME = "lzq1206"
 EXCLUDED_REPOS = {"family", "hub"}
+# Keep the homepage focused on the user's preferred collection order. New
+# sites that are not listed here are appended using the normal freshness sort.
+CURATED_SITE_ORDER = (
+    "notam-whisper",
+    "AIWeb",
+    "OrbitWhisper",
+    "WeatherWhisper",
+    "CulturalWhisper",
+    "Poetry-Whisper",
+    "RetroWhisper",
+    "Milkyseas",
+    "railwaystar",
+    "MirageWhisper",
+    "SunsetWhisper",
+    "webwhisper",
+    "QuantWhisper",
+)
+CURATED_SITE_ORDER_INDEX = {name.casefold(): index for index, name in enumerate(CURATED_SITE_ORDER)}
 # Keep preview images in this Pages repository.  Same-origin paths remain
 # available when raw.githubusercontent.com is unavailable or filtered.
 PREVIEW_PATH_PREFIX = "screenshots"
@@ -241,8 +259,7 @@ def fetch_sites(
         sites.append(site)
         seen.add(site.url)
 
-    sites.sort(key=_site_sort_key)
-    return sites
+    return _sort_sites(sites)
 
 
 def _format_site_updated_at(site: Site) -> str:
@@ -254,6 +271,18 @@ def _format_site_updated_at(site: Site) -> str:
 def _site_sort_key(site: Site) -> tuple[int, float, str]:
     timestamp = site.updated_at.timestamp() if site.updated_at else 0.0
     return (0 if site.updated_at else 1, -timestamp, site.name.lower())
+
+
+def _sort_sites(sites: Iterable[Site]) -> list[Site]:
+    """Return curated sites first, then any future additions by freshness."""
+    fallback_index = len(CURATED_SITE_ORDER_INDEX)
+    return sorted(
+        sites,
+        key=lambda site: (
+            CURATED_SITE_ORDER_INDEX.get(site.name.casefold(), fallback_index),
+            _site_sort_key(site),
+        ),
+    )
 
 
 def build_markdown(username: str, sites: Iterable[Site]) -> str:

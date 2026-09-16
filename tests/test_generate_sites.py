@@ -5,6 +5,7 @@ from scripts.generate_sites import (
     _extract_site,
     _pages_url,
     _request_json,
+    _sort_sites,
     build_markdown,
     build_sites_json,
     fetch_sites,
@@ -61,6 +62,14 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertIn('"name": "demo"', payload)
         self.assertIn('"url": "https://example.com"', payload)
         self.assertIn('"preview_url":', payload)
+
+    def test_sort_sites_uses_curated_homepage_order(self):
+        names = ["QuantWhisper", "RetroWhisper", "notam-whisper", "AIWeb", "OrbitWhisper"]
+        sites = [Site(name=name, url=f"https://{name}.example.com", description="", updated_at=None) for name in names]
+        self.assertEqual(
+            [site.name for site in _sort_sites(sites)],
+            ["notam-whisper", "AIWeb", "OrbitWhisper", "RetroWhisper", "QuantWhisper"],
+        )
 
     def test_parse_extra_repos_deduplicates_and_strips(self):
         repos = parse_extra_repos(" owner/repo ,owner/repo,foo/bar ")

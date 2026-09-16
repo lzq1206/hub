@@ -25,7 +25,7 @@
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1480px;margin:0 auto;padding:24px 18px 54px}
     .hero{padding:28px;border:1px solid var(--line);border-radius:32px;background:linear-gradient(180deg,rgba(15,23,42,.94),rgba(8,15,30,.96));box-shadow:var(--shadow)}
-    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:stretch}
+    .hero-grid{display:grid;grid-template-columns:1fr;gap:18px;align-items:stretch}
     .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#dce8ff;font-size:13px;font-weight:700}
     h1{margin:14px 0 10px;font-size:clamp(32px,5vw,62px);line-height:1.02;letter-spacing:-.03em}
     .lead{margin:0;max-width:66ch;color:var(--soft);font-size:16px;line-height:1.85}
@@ -147,17 +147,10 @@
         <div>
           <div class="eyebrow">🌐 hub · Rainy Whisper Websites</div>
           <h1>我的网页集合站</h1>
-          <p class="lead">自动聚合已部署的网站地址、简介与预览。这里作为整个仓库的首页，点击即可跳转到各个独立项目页面。</p>
           <div class="hero-actions">
             <a class="btn" href="#gallery">开始浏览</a>
             <a class="btn" href="https://github.com/lzq1206" target="_blank" rel="noreferrer">GitHub 主页</a>
           </div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="k">站点数量</div><div class="v" id="siteCount">—</div><div class="d">自动聚合的唯一链接数</div></div>
-          <div class="stat"><div class="k">来源类型</div><div class="v" id="sourceCount">—</div><div class="d">GitHub Pages / 自定义域名</div></div>
-          <div class="stat"><div class="k">数据文件</div><div class="v">sites.json</div><div class="d">由脚本自动生成</div></div>
-          <div class="stat"><div class="k">首页状态</div><div class="v">Hub</div><div class="d">可直接部署到 GitHub Pages</div></div>
         </div>
       </div>
     </section>
@@ -190,8 +183,6 @@
     const empty = document.getElementById('empty');
     const search = document.getElementById('search');
     const hint = document.getElementById('hint');
-    const siteCount = document.getElementById('siteCount');
-    const sourceCount = document.getElementById('sourceCount');
     const chips = [...document.querySelectorAll('.chip[data-filter]')];
     const styleOptions = [...document.querySelectorAll('[data-style-option]')];
     let activeFilter = 'all';
@@ -273,8 +264,6 @@
       try {
         const res = await fetch('sites.json', { cache: 'no-store' });
         sites = await res.json();
-        siteCount.textContent = String(sites.length);
-        sourceCount.textContent = String(new Set(sites.map(s => sourceType(s.url))).size);
         hint.textContent = `已加载 ${sites.length} 个站点。`;
         render();
       } catch (err) {
