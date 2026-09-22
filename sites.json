@@ -8,6 +8,14 @@
     "preview_url": "screenshots/rocket-rainywhisper-com.png"
   },
   {
+    "name": "SubwayWhisper",
+    "url": "https://subway.rainywhisper.com/",
+    "description": "通勤路线可达范围分析地图，可按出发点、时段和出行方式查看公交、骑行或驾车的真实路网边界。",
+    "updated_at": "2026-09-22T14:16:39Z",
+    "slug": "subway-rainywhisper-com",
+    "preview_url": "screenshots/subway-rainywhisper-com.png"
+  },
+  {
     "name": "AIWeb",
     "url": "https://aiweb.rainywhisper.com/",
     "description": "AI 小项目灵感库，聚合值得打开的开源工具、界面实验与 Vibe Coding 项目。",

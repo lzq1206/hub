@@ -44,6 +44,12 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertIsNotNone(site)
         self.assertEqual(site.url, "https://retro.rainywhisper.com/")
 
+    def test_extract_site_uses_subwaywhisper_custom_domain_override(self):
+        site = _extract_site("lzq1206", {"name": "SubwayWhisper", "has_pages": False})
+        self.assertIsNotNone(site)
+        self.assertEqual(site.url, "https://subway.rainywhisper.com/")
+        self.assertIn("通勤路线可达范围", site.description)
+
     def test_pages_url_for_user_site(self):
         self.assertEqual(_pages_url("lzq1206", "lzq1206.github.io"), "https://lzq1206.github.io/")
 
@@ -64,11 +70,11 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertIn('"preview_url":', payload)
 
     def test_sort_sites_uses_curated_homepage_order(self):
-        names = ["QuantWhisper", "RetroWhisper", "notam-whisper", "AIWeb", "OrbitWhisper"]
+        names = ["QuantWhisper", "RetroWhisper", "notam-whisper", "AIWeb", "SubwayWhisper", "OrbitWhisper"]
         sites = [Site(name=name, url=f"https://{name}.example.com", description="", updated_at=None) for name in names]
         self.assertEqual(
             [site.name for site in _sort_sites(sites)],
-            ["notam-whisper", "AIWeb", "OrbitWhisper", "RetroWhisper", "QuantWhisper"],
+            ["notam-whisper", "SubwayWhisper", "AIWeb", "OrbitWhisper", "RetroWhisper", "QuantWhisper"],
         )
 
     def test_parse_extra_repos_deduplicates_and_strips(self):

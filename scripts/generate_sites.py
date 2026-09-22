@@ -21,6 +21,7 @@ EXCLUDED_REPOS = {"family", "hub"}
 # sites that are not listed here are appended using the normal freshness sort.
 CURATED_SITE_ORDER = (
     "notam-whisper",
+    "SubwayWhisper",
     "AIWeb",
     "OrbitWhisper",
     "WeatherWhisper",
@@ -52,6 +53,7 @@ INTRO_OVERRIDES = {
     "culturalwhisper": "全国重点文物保护单位地图页，支持 KML / GeoJSON 导入、搜索、批次与省份筛选、点位详情查看和统计汇总，方便把文保名录快速落到地图上。",
     "miragewhisper": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
     "milkyseas": "多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。",
+    "subwaywhisper": "通勤路线可达范围分析地图，可按出发点、时段和出行方式查看公交、骑行或驾车的真实路网边界。",
 }
 # Some repositories retain a GitHub Pages homepage while their public site has
 # moved to a custom domain. Keep these canonical links stable across refreshes.
@@ -59,6 +61,7 @@ SITE_URL_OVERRIDES = {
     "aiweb": "https://aiweb.rainywhisper.com/",
     "retrowhisper": "https://retro.rainywhisper.com/",
     "notam-whisper": "https://rocket.rainywhisper.com/",
+    "subwaywhisper": "https://subway.rainywhisper.com/",
     "orbitwhisper": "https://orbit.rainywhisper.com/",
     "sunsetwhisper": "https://sunset.rainywhisper.com/",
     "miragewhisper": "https://mirage.rainywhisper.com/",
