@@ -1,4 +1,6 @@
 import unittest
+import json
+from pathlib import Path
 
 from scripts.generate_sites import (
     Site,
@@ -50,6 +52,24 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertEqual(site.url, "https://subway.rainywhisper.com/")
         self.assertIn("通勤路线可达范围", site.description)
 
+    def test_extract_site_uses_filmwhisper_custom_domain_override(self):
+        site = _extract_site("lzq1206", {"name": "FilmWhisper", "homepage": "https://lzq1206.github.io/FilmWhisper/", "has_pages": True})
+        self.assertIsNotNone(site)
+        self.assertEqual(site.url, "https://film.rainywhisper.com/")
+        self.assertIn("45 种胶片", site.description)
+        self.assertIn("本地处理", site.description)
+        payload = json.loads(build_sites_json([site]))[0]
+        self.assertEqual(payload["preview_url"], "screenshots/film-rainywhisper-com.png")
+
+    def test_published_filmwhisper_card_is_second(self):
+        root = Path(__file__).resolve().parents[1]
+        sites = json.loads((root / "sites.json").read_text(encoding="utf-8"))
+        self.assertEqual([site["name"] for site in sites[:3]], ["notam-whisper", "FilmWhisper", "SubwayWhisper"])
+        self.assertEqual(sum(site["name"] == "FilmWhisper" for site in sites), 1)
+        film = sites[1]
+        self.assertEqual(film["url"], "https://film.rainywhisper.com/")
+        self.assertEqual((root / film["preview_url"]).read_bytes()[:8], b"\x89PNG\r\n\x1a\n")
+
     def test_pages_url_for_user_site(self):
         self.assertEqual(_pages_url("lzq1206", "lzq1206.github.io"), "https://lzq1206.github.io/")
 
@@ -70,11 +90,11 @@ class GenerateSitesTests(unittest.TestCase):
         self.assertIn('"preview_url":', payload)
 
     def test_sort_sites_uses_curated_homepage_order(self):
-        names = ["QuantWhisper", "RetroWhisper", "notam-whisper", "AIWeb", "SubwayWhisper", "OrbitWhisper"]
+        names = ["QuantWhisper", "RetroWhisper", "notam-whisper", "AIWeb", "SubwayWhisper", "OrbitWhisper", "FilmWhisper"]
         sites = [Site(name=name, url=f"https://{name}.example.com", description="", updated_at=None) for name in names]
         self.assertEqual(
             [site.name for site in _sort_sites(sites)],
-            ["notam-whisper", "SubwayWhisper", "AIWeb", "OrbitWhisper", "RetroWhisper", "QuantWhisper"],
+            ["notam-whisper", "FilmWhisper", "SubwayWhisper", "AIWeb", "OrbitWhisper", "RetroWhisper", "QuantWhisper"],
         )
 
     def test_parse_extra_repos_deduplicates_and_strips(self):

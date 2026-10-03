@@ -8,6 +8,14 @@
     "preview_url": "screenshots/rocket-rainywhisper-com.png"
   },
   {
+    "name": "FilmWhisper",
+    "url": "https://film.rainywhisper.com/",
+    "description": "浏览器中的胶片模拟与照片调色工具，提供 45 种胶片色彩、RGB 曲线和前后对比，支持 RAW 与 16 位 TIFF 处理及高清导出；照片仅在本地处理。",
+    "updated_at": "2026-10-03T08:34:12Z",
+    "slug": "film-rainywhisper-com",
+    "preview_url": "screenshots/film-rainywhisper-com.png"
+  },
+  {
     "name": "SubwayWhisper",
     "url": "https://subway.rainywhisper.com/",
     "description": "通勤路线可达范围分析地图，可按出发点、时段和出行方式查看公交、骑行或驾车的真实路网边界。",

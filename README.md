@@ -4,7 +4,7 @@
 
 截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）
 
-_最后更新：2026-09-22 14:23 UTC_
+_最后更新：2026-10-03 08:40 UTC_
 
 ## 网站列表
 
@@ -15,6 +15,14 @@ _最后更新：2026-09-22 14:23 UTC_
 最近更新时间：2026-09-16 07:59 UTC
 
 ![notam-whisper 预览图](screenshots/rocket-rainywhisper-com.png)
+
+### [FilmWhisper](https://film.rainywhisper.com/)
+
+浏览器中的胶片模拟与照片调色工具，提供 45 种胶片色彩、RGB 曲线和前后对比，支持 RAW 与 16 位 TIFF 处理及高清导出；照片仅在本地处理。
+
+最近更新时间：2026-10-03 08:34 UTC
+
+![FilmWhisper 预览图](screenshots/film-rainywhisper-com.png)
 
 ### [SubwayWhisper](https://subway.rainywhisper.com/)
 

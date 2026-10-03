@@ -21,6 +21,7 @@ EXCLUDED_REPOS = {"family", "hub"}
 # sites that are not listed here are appended using the normal freshness sort.
 CURATED_SITE_ORDER = (
     "notam-whisper",
+    "FilmWhisper",
     "SubwayWhisper",
     "AIWeb",
     "OrbitWhisper",
@@ -40,6 +41,7 @@ CURATED_SITE_ORDER_INDEX = {name.casefold(): index for index, name in enumerate(
 # available when raw.githubusercontent.com is unavailable or filtered.
 PREVIEW_PATH_PREFIX = "screenshots"
 INTRO_OVERRIDES = {
+    "filmwhisper": "浏览器中的胶片模拟与照片调色工具，提供 45 种胶片色彩、RGB 曲线和前后对比，支持 RAW 与 16 位 TIFF 处理及高清导出；照片仅在本地处理。",
     "aiweb": "AI 小项目灵感库，聚合值得打开的开源工具、界面实验与 Vibe Coding 项目。",
     "retrowhisper": "复古游戏、模拟器与像素工具目录，按复古主题整理值得保存的开源项目。",
     "poetry-whisper": "古典诗词格律写作助手，围绕格律校验、词牌与意象提示提供交互式创作支持，帮助把灵感整理成更合乎传统韵律的诗词作品。",
@@ -58,6 +60,7 @@ INTRO_OVERRIDES = {
 # Some repositories retain a GitHub Pages homepage while their public site has
 # moved to a custom domain. Keep these canonical links stable across refreshes.
 SITE_URL_OVERRIDES = {
+    "filmwhisper": "https://film.rainywhisper.com/",
     "aiweb": "https://aiweb.rainywhisper.com/",
     "retrowhisper": "https://retro.rainywhisper.com/",
     "notam-whisper": "https://rocket.rainywhisper.com/",
