@@ -24,6 +24,7 @@ CURATED_SITE_ORDER = (
     "FilmWhisper",
     "SubwayWhisper",
     "AIWeb",
+    "CosmosWhisper",
     "OrbitWhisper",
     "WeatherWhisper",
     "CulturalWhisper",
@@ -56,6 +57,7 @@ INTRO_OVERRIDES = {
     "miragewhisper": "基于 GFS 分层温度数据的海市蜃楼与绿闪预报站，利用逆温层结构、云量和海温等信息评估未来多天的观测概率，并提供城市排行与热图展示。",
     "milkyseas": "多地点荧光海预测与可视化站点，定时抓取海洋与天气预报，输出中国沿海/近海城市的高概率评分、趋势图和历史快照，帮助判断荧光海观测机会。",
     "subwaywhisper": "通勤路线可达范围分析地图，可按出发点、时段和出行方式查看公交、骑行或驾车的真实路网边界。",
+    "cosmoswhisper": "根据观测地点与当前时间实时绘制的交互式星图，整合星座、银河、黄道、天赤道、行星与月相，并展示晨昏和日照状态；同时提供可见天区、活动星盘及 Widgy、Watch 等使用版本。",
 }
 # Some repositories retain a GitHub Pages homepage while their public site has
 # moved to a custom domain. Keep these canonical links stable across refreshes.
@@ -75,6 +77,7 @@ SITE_URL_OVERRIDES = {
     "culturalwhisper": "https://cultural.rainywhisper.com/",
     "milkyseas": "https://milkyseas.rainywhisper.com/",
     "poetry-whisper": "https://poetry.rainywhisper.com/",
+    "cosmoswhisper": "https://cosmos.rainywhisper.com/",
 }
 # GitHub username constraints: starts with alnum, continues with alnum/_/-, max 39 chars.
 USERNAME_PATTERN = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9_-]{0,38})$")

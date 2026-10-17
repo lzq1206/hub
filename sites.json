@@ -32,6 +32,14 @@
     "preview_url": "screenshots/aiweb-rainywhisper-com.png"
   },
   {
+    "name": "CosmosWhisper",
+    "url": "https://cosmos.rainywhisper.com/",
+    "description": "根据观测地点与当前时间实时绘制的交互式星图，整合星座、银河、黄道、天赤道、行星与月相，并展示晨昏和日照状态；同时提供可见天区、活动星盘及 Widgy、Watch 等使用版本。",
+    "updated_at": "2026-10-17T09:59:03Z",
+    "slug": "cosmos-rainywhisper-com",
+    "preview_url": "screenshots/cosmos-rainywhisper-com.png"
+  },
+  {
     "name": "OrbitWhisper",
     "url": "https://orbit.rainywhisper.com/",
     "description": "3D 在轨资产可视化与碰撞风险监控终端，围绕轨道卫星位置、动态风险和决策辅助展开，把高精度空间避碰分析做成可交互的网页面板。",

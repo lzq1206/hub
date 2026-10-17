@@ -4,7 +4,7 @@
 
 截图图片存放在本仓库的 `screenshots/` 目录中（仅手动更新，不自动刷新）
 
-_最后更新：2026-10-03 08:40 UTC_
+_最后更新：2026-10-17 10:03 UTC_
 
 ## 网站列表
 
@@ -39,6 +39,14 @@ AI 小项目灵感库，聚合值得打开的开源工具、界面实验与 Vibe
 最近更新时间：2026-09-16 11:30 UTC
 
 ![AIWeb 预览图](screenshots/aiweb-rainywhisper-com.png)
+
+### [CosmosWhisper](https://cosmos.rainywhisper.com/)
+
+根据观测地点与当前时间实时绘制的交互式星图，整合星座、银河、黄道、天赤道、行星与月相，并展示晨昏和日照状态；同时提供可见天区、活动星盘及 Widgy、Watch 等使用版本。
+
+最近更新时间：2026-10-17 09:59 UTC
+
+![CosmosWhisper 预览图](screenshots/cosmos-rainywhisper-com.png)
 
 ### [OrbitWhisper](https://orbit.rainywhisper.com/)
 
