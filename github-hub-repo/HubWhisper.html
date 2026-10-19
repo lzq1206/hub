@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>HubWhisper — 多站点聚合微端</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #050811;
+      color: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    /* Hide scrollbar for protruding tab strip */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Full-Screen WebView Iframe Stage with bottom edge fade-out into the card slot */
+    .stage-container {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      height: 100%;
+      background: #050811;
+      overflow: hidden;
+      /* Extend slightly under the gradient roll-in hood so the webpage visibly tucks into the bottom card */
+      margin-bottom: -32px;
+      padding-bottom: 32px;
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000000 0%,
+        #000000 calc(100% - 58px),
+        rgba(0, 0, 0, 0.72) calc(100% - 28px),
+        rgba(0, 0, 0, 0.18) calc(100% - 8px),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        #000000 0%,
+        #000000 calc(100% - 58px),
+        rgba(0, 0, 0, 0.72) calc(100% - 28px),
+        rgba(0, 0, 0, 0.18) calc(100% - 8px),
+        transparent 100%
+      );
+    }
+    .whisper-iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+    }
+    .whisper-iframe.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 10;
+    }
+    /* Bottom Card Switcher lifted up to avoid full-screen gesture navigation bar */
+    .bottom-deck-wrapper {
+      position: relative;
+      z-index: 40;
+      flex-shrink: 0;
+      overflow: visible;
+      /* Extra upward gradient zone + bottom safe-area clearance for gesture navigation bar */
+      padding-top: 24px;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      /* Multi-stop cylindrical roll-in gradient: transparent at top -> soft shadow -> deep card base */
+      background: linear-gradient(
+        180deg,
+        rgba(5, 8, 17, 0) 0%,
+        rgba(5, 8, 17, 0.26) 24%,
+        rgba(6, 10, 20, 0.68) 48%,
+        rgba(8, 13, 25, 0.92) 72%,
+        #060913 88%,
+        #050811 100%
+      );
+    }
+    /* Curved Roll-In Shadow Crease right where the webpage tucks into the card slot */
+    .roll-in-crease {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 34px;
+      pointer-events: none;
+      background: radial-gradient(
+        58% 100% at 50% 100%,
+        rgba(2, 6, 23, 0.72) 0%,
+        rgba(2, 6, 23, 0.25) 55%,
+        rgba(2, 6, 23, 0) 100%
+      );
+      z-index: 1;
+    }
+    /*
+     * Upward-protruding tabs rail:
+     * Generous top/left/right/bottom padding (compensated with negative margin) so the active
+     * tab's outer glow (box-shadow) has 32px of unclipped breathing room in every direction.
+     */
+    .protruding-tabs-rail {
+      position: relative;
+      z-index: 8;
+      margin-top: -26px;
+      margin-bottom: -6px;
+      padding: 32px 20px 6px 20px;
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+    }
+    .protruding-tab {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 13px 9px 11px;
+      background: linear-gradient(
+        180deg,
+        rgba(24, 34, 54, 0.9) 0%,
+        rgba(15, 23, 42, 0.96) 65%,
+        rgba(9, 14, 26, 0.99) 100%
+      );
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-bottom: none;
+      border-top-left-radius: 13px;
+      border-top-right-radius: 13px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transform-origin: bottom center;
+      transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow:
+        0 -4px 12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+    /* Glowing accent bar along the top arch of the active inverted tab */
+    .protruding-tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      border-radius: 2px;
+      background: transparent;
+      transition: all 0.22s ease;
+    }
+    .protruding-tab:hover {
+      color: #e2e8f0;
+      padding-top: 9px;
+      background: linear-gradient(
+        180deg,
+        rgba(30, 41, 66, 0.94) 0%,
+        rgba(19, 28, 49, 0.98) 65%,
+        rgba(9, 14, 26, 1) 100%
+      );
+    }
+    .protruding-tab.active {
+      color: #ffffff;
+      /* Grow upward from the base without detaching the bottom seam */
+      padding-top: 12px;
+      padding-bottom: 11px;
+      background: linear-gradient(
+        180deg,
+        rgba(23, 37, 84, 0.96) 0%,
+        rgba(13, 19, 34, 0.99) 72%,
+        rgba(7, 11, 21, 1) 100%
+      );
+      border-color: var(--tab-color, #38bdf8);
+      box-shadow:
+        0 -4px 18px 1px var(--tab-glow, rgba(56, 189, 248, 0.45)),
+        0 0 10px 0 var(--tab-glow, rgba(56, 189, 248, 0.32)),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      z-index: 10;
+    }
+    .protruding-tab.active::before {
+      background: var(--tab-color, #38bdf8);
+      box-shadow: 0 0 10px 1px var(--tab-color, #38bdf8);
+    }
+    .tab-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      transition: all 0.18s ease;
+    }
+    .protruding-tab.active .tab-dot {
+      transform: scale(1.25);
+      box-shadow: 0 0 8px currentColor;
+    }
+    /* Bottom Card Lip Pocket (the slot into which the webpage rolls and tabs anchor) */
+    .bottom-card-base {
+      position: relative;
+      z-index: 9;
+      height: 10px;
+      margin: 0 8px;
+      background: linear-gradient(
+        180deg,
+        rgba(17, 24, 39, 0.96) 0%,
+        rgba(7, 11, 20, 0.85) 60%,
+        rgba(5, 8, 17, 0) 100%
+      );
+      border-top: 1px solid rgba(148, 163, 184, 0.24);
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      box-shadow:
+        0 -3px 10px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden select-none bg-[#050811]">
+
+  <!-- MAXIMIZED FULL-SCREEN WEBVIEW / IFRAME CONTAINER (底部边缘渐隐卷入下方卡槽) -->
+  <main id="iframeStage" class="stage-container"></main>
+
+  <!-- BOTTOM INVERTED CARD + UPWARD-PROTRUDING FOLDER TABS (与 github.com/lzq1206/hub 远程实时同步) -->
+  <footer id="bottomDeckWrapper" class="bottom-deck-wrapper">
+    <div class="roll-in-crease" aria-hidden="true"></div>
+    <nav id="protrudingTabRail" aria-label="底部伸出式标签切换栏" class="protruding-tabs-rail no-scrollbar"></nav>
+    <div class="bottom-card-base"></div>
+  </footer>
+
+  <script>
+    const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v3';
+
+    // 远程同步源（按优先级依次尝试：支持 sites.json 配置文件 或 直接解析 lzq1206/hub 的 index.html / README.md）
+    const HUB_SYNC_SOURCES = [
+      { type: 'json', url: 'https://lzq1206.github.io/hub/sites.json' },
+      { type: 'json', url: 'https://raw.githubusercontent.com/lzq1206/hub/main/sites.json' },
+      { type: 'json', url: 'https://raw.githubusercontent.com/lzq1206/hub/master/sites.json' },
+      { type: 'html', url: 'https://lzq1206.github.io/hub/' },
+      { type: 'html', url: 'https://raw.githubusercontent.com/lzq1206/hub/main/index.html' },
+      { type: 'html', url: 'https://raw.githubusercontent.com/lzq1206/hub/master/index.html' },
+      { type: 'md',   url: 'https://raw.githubusercontent.com/lzq1206/hub/main/README.md' }
+    ];
+
+    // 预设调色盘与图标库（当从 hub 仓库自动发现新增网页时，按顺序或关键词自动赋予霓虹光晕与图标）
+    const NEON_PALETTE = [
+      { color: '#38bdf8', glow: 'rgba(56, 189, 248, 0.45)' },
+      { color: '#f59e0b', glow: 'rgba(245, 158, 11, 0.45)' },
+      { color: '#a855f7', glow: 'rgba(168, 85, 247, 0.45)' },
+      { color: '#10b981', glow: 'rgba(16, 185, 129, 0.45)' },
+      { color: '#06b6d4', glow: 'rgba(6, 182, 212, 0.45)' },
+      { color: '#ec4899', glow: 'rgba(236, 72, 153, 0.45)' },
+      { color: '#6366f1', glow: 'rgba(99, 102, 241, 0.45)' },
+      { color: '#14b8a6', glow: 'rgba(20, 184, 166, 0.45)' },
+      { color: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.45)' },
+      { color: '#f97316', glow: 'rgba(249, 115, 22, 0.45)' },
+      { color: '#e879f9', glow: 'rgba(232, 121, 249, 0.45)' },
+      { color: '#2dd4bf', glow: 'rgba(45, 212, 191, 0.45)' }
+    ];
+
+    // 默认内置站点列表（离线兜底及初始预设）
+    const DEFAULT_SITES = [
+      {
+        id: 'rocket',
+        name: 'RocketWhisper',
+        url: 'https://lzq1206.github.io/notam-whisper/',
+        color: '#38bdf8',
+        glow: 'rgba(56, 189, 248, 0.45)',
+        icon: '🚀'
+      },
+      {
+        id: 'film',
+        name: 'FilmWhisper',
+        url: 'https://lzq1206.github.io/FilmWhisper/',
+        color: '#f59e0b',
+        glow: 'rgba(245, 158, 11, 0.45)',
+        icon: '🎬'
+      },
+      {
+        id: 'cosmos',
+        name: 'CosmosWhisper',
+        url: 'https://lzq1206.github.io/CosmosWhisper/',
+        color: '#a855f7',
+        glow: 'rgba(168, 85, 247, 0.45)',
+        icon: '🌌'
+      },
+      {
+        id: 'subway',
+        name: 'SubwayWhisper',
+        url: 'https://lzq1206.github.io/SubwayWhisper/',
+        color: '#10b981',
+        glow: 'rgba(16, 185, 129, 0.45)',
+        icon: '🚇'
+      },
+      {
+        id: 'weather',
+        name: 'WeatherWhisper',
+        url: 'https://lzq1206.github.io/WeatherWhisper/',
+        color: '#06b6d4',
+        glow: 'rgba(6, 182, 212, 0.45)',
+        icon: '⛅'
+      },
+      {
+        id: 'cultural',
+        name: 'CulturalWhisper',
+        url: 'https://lzq1206.github.io/CulturalWhisper/',
+        color: '#ec4899',
+        glow: 'rgba(236, 72, 153, 0.45)',
+        icon: '🏛️'
+      },
+      {
+        id: 'orbit',
+        name: 'OrbitWhisper',
+        url: 'https://lzq1206.github.io/OrbitWhisper/',
+        color: '#6366f1',
+        glow: 'rgba(99, 102, 241, 0.45)',
+        icon: '🛰️'
+      },
+      {
+        id: 'poetry',
+        name: 'Poetry-Whisper',
+        url: 'https://lzq1206.github.io/Poetry-Whisper/',
+        color: '#14b8a6',
+        glow: 'rgba(20, 184, 166, 0.45)',
+        icon: '📜'
+      },
+      {
+        id: 'aiweb',
+        name: 'AIWeb',
+        url: 'https://lzq1206.github.io/AIWeb/',
+        color: '#8b5cf6',
+        glow: 'rgba(139, 92, 246, 0.45)',
+        icon: '🤖'
+      },
+      {
+        id: 'retro',
+        name: 'RetroWhisper',
+        url: 'https://lzq1206.github.io/RetroWhisper/',
+        color: '#f97316',
+        glow: 'rgba(249, 115, 22, 0.45)',
+        icon: '🕹️'
+      },
+      {
+        id: 'mirage',
+        name: 'MirageWhisper',
+        url: 'https://lzq1206.github.io/MirageWhisper/',
+        color: '#e879f9',
+        glow: 'rgba(232, 121, 249, 0.45)',
+        icon: '✨'
+      },
+      {
+        id: 'milkyseas',
+        name: 'Milkyseas',
+        url: 'https://lzq1206.github.io/Milkyseas/',
+        color: '#2dd4bf',
+        glow: 'rgba(45, 212, 191, 0.45)',
+        icon: '🌊'
+      }
+    ];
+
+    let SITES = DEFAULT_SITES.map(s => ({ ...s }));
+    let activeIndex = 0;
+    const loadedFrames = {};
+
+    function normalizeUrl(rawUrl) {
+      if (!rawUrl) return '';
+      let u = String(rawUrl).trim();
+      if (u.startsWith('./') || u.startsWith('../')) {
+        try {
+          u = new URL(u, 'https://lzq1206.github.io/hub/').href;
+        } catch (e) {}
+      } else if (u.startsWith('/') && !u.startsWith('//')) {
+        u = 'https://lzq1206.github.io' + u;
+      } else if (!u.startsWith('http://') && !u.startsWith('https://')) {
+        u = 'https://' + u;
+      }
+      return u;
+    }
+
+    function urlKey(u) {
+      return normalizeUrl(u).replace(/\/+$/, '').toLowerCase();
+    }
+
+    function inferIcon(name, urlStr, fallbackEmoji) {
+      if (fallbackEmoji) return fallbackEmoji;
+      const lower = (name + ' ' + urlStr).toLowerCase();
+      if (lower.includes('notam') || lower.includes('rocket')) return '🚀';
+      if (lower.includes('film') || lower.includes('movie')) return '🎬';
+      if (lower.includes('cosmos') || lower.includes('star') || lower.includes('space')) return '🌌';
+      if (lower.includes('subway') || lower.includes('metro') || lower.includes('rail')) return '🚇';
+      if (lower.includes('weather') || lower.includes('climate')) return '⛅';
+      if (lower.includes('cultural') || lower.includes('culture') || lower.includes('museum')) return '🏛️';
+      if (lower.includes('orbit') || lower.includes('satellite')) return '🛰️';
+      if (lower.includes('poetry') || lower.includes('poem')) return '📜';
+      if (lower.includes('ai')) return '🤖';
+      if (lower.includes('retro') || lower.includes('game')) return '🕹️';
+      if (lower.includes('mirage') || lower.includes('vision')) return '✨';
+      if (lower.includes('milky') || lower.includes('sea') || lower.includes('ocean')) return '🌊';
+      return '🧭';
+    }
+
+    function hexToGlow(hex) {
+      if (!hex || !hex.startsWith('#') || (hex.length !== 7 && hex.length !== 4)) {
+        return 'rgba(56, 189, 248, 0.45)';
+      }
+      let r = 56, g = 189, b = 248;
+      if (hex.length === 7) {
+        r = parseInt(hex.slice(1, 3), 16);
+        g = parseInt(hex.slice(3, 5), 16);
+        b = parseInt(hex.slice(5, 7), 16);
+      }
+      return `rgba(${r}, ${g}, ${b}, 0.45)`;
+    }
+
+    function enrichSiteList(rawItems) {
+      const knownByUrl = {};
+      const knownByName = {};
+      DEFAULT_SITES.forEach(s => {
+        knownByUrl[urlKey(s.url)] = s;
+        knownByName[s.name.toLowerCase()] = s;
+      });
+
+      const seenUrls = new Set();
+      const result = [];
+
+      rawItems.forEach((item, idx) => {
+        const normUrl = normalizeUrl(item.url || item.href || item.link || '');
+        if (!normUrl) return;
+        const k = urlKey(normUrl);
+        // 排除纯源码仓库跳出链接或自身空锚点
+        if (!k || k === 'https://lzq1206.github.io/hub' || k.endsWith('.apk') || k.endsWith('.zip')) return;
+        if (seenUrls.has(k)) return;
+        seenUrls.add(k);
+
+        let rawName = (item.name || item.title || '').trim();
+        if (!rawName) {
+          const parts = normUrl.replace(/\/+$/, '').split('/');
+          rawName = parts[parts.length - 1] || ('Site-' + (idx + 1));
+        }
+
+        const matched = knownByUrl[k] || knownByName[rawName.toLowerCase()];
+        const palette = NEON_PALETTE[result.length % NEON_PALETTE.length];
+        const color = item.color || (matched && matched.color) || palette.color;
+        const glow = item.glow || (item.color ? hexToGlow(item.color) : (matched && matched.glow) || palette.glow);
+        const icon = item.icon || (matched && matched.icon) || inferIcon(rawName, normUrl);
+        const id = (item.id || (matched && matched.id) || rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-')) + '-' + result.length;
+
+        result.push({
+          id,
+          name: (matched && rawName.toLowerCase() === matched.url.split('/').filter(Boolean).pop().toLowerCase()) ? matched.name : rawName,
+          url: normUrl,
+          color,
+          glow,
+          icon
+        });
+      });
+
+      return result;
+    }
+
+    // 解析 github.com/lzq1206/hub 中的 HTML（同时支持 DOM <a> 卡片顺序提取 与 <script> 数组顺序提取）
+    function parseHubHtml(htmlText) {
+      const extracted = [];
+
+      // 1. 尝试解析 <script id="hub-sites" type="application/json">
+      const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+      const jsonScript = doc.querySelector('script#hub-sites, script[data-hub-sites]');
+      if (jsonScript && jsonScript.textContent) {
+        try {
+          const parsed = JSON.parse(jsonScript.textContent);
+          const arr = Array.isArray(parsed) ? parsed : (parsed.sites || []);
+          if (arr.length > 0) return enrichSiteList(arr);
+        } catch (e) {}
+      }
+
+      // 2. 按照 DOM 出现的先后顺序扫描所有站点卡片链接 <a href="...">
+      const anchors = Array.from(doc.querySelectorAll('a[href]'));
+      anchors.forEach(a => {
+        const href = a.getAttribute('href') || '';
+        if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:')) return;
+        const fullUrl = normalizeUrl(href);
+        // 过滤指向 github.com 源码页（非 github.io 网页端）的链接
+        if (fullUrl.includes('github.com/') && !fullUrl.includes('github.io')) return;
+
+        const dataName = a.getAttribute('data-name') || a.getAttribute('data-title');
+        const heading = a.querySelector('h1, h2, h3, h4, .title, .card-title, .site-name, strong');
+        let name = dataName || (heading ? heading.textContent.trim() : '');
+        if (!name) {
+          name = (a.textContent || '').trim().split('\n')[0].trim();
+        }
+        // 提取卡片中可能存在的 Emoji 图标
+        const emojiMatch = (a.textContent || '').match(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u);
+        const icon = a.getAttribute('data-icon') || (emojiMatch ? emojiMatch[0] : '');
+        const color = a.getAttribute('data-color') || '';
+
+        extracted.push({ name, url: fullUrl, icon, color });
+      });
+
+      // 3. 如果 hub/index.html 是通过 JS 数组渲染的，按脚本中对象出现的顺序提取
+      if (extracted.length === 0) {
+        const objRegex = /\{[^{}]*?(?:url|href|link)\s*:\s*['"]([^'"]+)['"][^{}]*?\}/gi;
+        let match;
+        while ((match = objRegex.exec(htmlText)) !== null) {
+          const block = match[0];
+          const urlVal = match[1];
+          const nameMatch = block.match(/(?:name|title|label)\s*:\s*['"]([^'"]+)['"]/i);
+          const iconMatch = block.match(/(?:icon|emoji)\s*:\s*['"]([^'"]+)['"]/i);
+          const colorMatch = block.match(/(?:color|accent)\s*:\s*['"]([^'"]+)['"]/i);
+          extracted.push({
+            name: nameMatch ? nameMatch[1] : '',
+            url: urlVal,
+            icon: iconMatch ? iconMatch[1] : '',
+            color: colorMatch ? colorMatch[1] : ''
+          });
+        }
+      }
+
+      return enrichSiteList(extracted);
+    }
+
+    function parseHubMarkdown(mdText) {
+      const extracted = [];
+      const mdLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+      let m;
+      while ((m = mdLinkRegex.exec(mdText)) !== null) {
+        const title = m[1].trim();
+        const url = m[2].trim();
+        if (url.includes('github.com/') && !url.includes('github.io')) continue;
+        extracted.push({ name: title, url });
+      }
+      return enrichSiteList(extracted);
+    }
+
+    function loadCachedSites() {
+      try {
+        const raw = localStorage.getItem(CACHE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            SITES = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveCachedSites(list) {
+      try {
+        localStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    // 与 github.com/lzq1206/hub 远程同步站点列表及排序
+    async function syncWithGitHubHub() {
+      const bust = '?t=' + Date.now();
+      for (const src of HUB_SYNC_SOURCES) {
+        try {
+          const resp = await fetch(src.url + bust, { cache: 'no-store' });
+          if (!resp.ok) continue;
+          const text = await resp.text();
+          let synced = [];
+
+          if (src.type === 'json') {
+            const data = JSON.parse(text);
+            const arr = Array.isArray(data) ? data : (data.sites || []);
+            synced = enrichSiteList(arr);
+          } else if (src.type === 'html') {
+            synced = parseHubHtml(text);
+          } else if (src.type === 'md') {
+            synced = parseHubMarkdown(text);
+          }
+
+          if (synced && synced.length > 0) {
+            const currentActiveUrl = SITES[activeIndex] ? urlKey(SITES[activeIndex].url) : '';
+            const prevSignature = SITES.map(s => s.name + '|' + urlKey(s.url)).join(';;');
+            const nextSignature = synced.map(s => s.name + '|' + urlKey(s.url)).join(';;');
+
+            SITES = synced;
+            saveCachedSites(SITES);
+
+            if (prevSignature !== nextSignature) {
+              const newIdx = SITES.findIndex(s => urlKey(s.url) === currentActiveUrl);
+              activeIndex = newIdx >= 0 ? newIdx : 0;
+              renderProtrudingTabs();
+              ensureIframe(activeIndex);
+            }
+            return;
+          }
+        } catch (err) {
+          // 当前源不可达或跨域受限时自动尝试下一个源
+        }
+      }
+    }
+
+    function renderProtrudingTabs() {
+      const rail = document.getElementById('protrudingTabRail');
+      rail.innerHTML = '';
+
+      SITES.forEach((site, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'tab-btn-' + site.id;
+        btn.className = 'protruding-tab' + (idx === activeIndex ? ' active' : '');
+        btn.style.setProperty('--tab-color', site.color);
+        btn.style.setProperty('--tab-glow', site.glow);
+
+        const dot = document.createElement('span');
+        dot.className = 'tab-dot';
+        dot.style.backgroundColor = site.color;
+        dot.style.color = site.color;
+
+        const iconSpan = document.createElement('span');
+        iconSpan.textContent = site.icon;
+        iconSpan.className = 'text-xs';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = site.name;
+
+        btn.appendChild(dot);
+        btn.appendChild(iconSpan);
+        btn.appendChild(labelSpan);
+
+        btn.addEventListener('click', () => {
+          switchSite(idx);
+        });
+
+        rail.appendChild(btn);
+      });
+    }
+
+    function ensureIframe(idx) {
+      const site = SITES[idx];
+      if (!site) return;
+      const stage = document.getElementById('iframeStage');
+
+      Object.values(loadedFrames).forEach(frame => {
+        frame.classList.remove('active');
+      });
+
+      const frameKey = urlKey(site.url);
+      if (!loadedFrames[frameKey]) {
+        const iframe = document.createElement('iframe');
+        iframe.id = 'frame-' + site.id;
+        iframe.className = 'whisper-iframe active';
+        iframe.src = site.url;
+        iframe.setAttribute('allow', 'geolocation; microphone; camera; midi; encrypted-media; autoplay; fullscreen; clipboard-read; clipboard-write; accelerometer; gyroscope');
+        iframe.setAttribute('allowfullscreen', 'true');
+
+        stage.appendChild(iframe);
+        loadedFrames[frameKey] = iframe;
+      } else {
+        loadedFrames[frameKey].classList.add('active');
+      }
+    }
+
+    function switchSite(idx) {
+      if (idx < 0) idx = SITES.length - 1;
+      if (idx >= SITES.length) idx = 0;
+      activeIndex = idx;
+      const site = SITES[activeIndex];
+
+      renderProtrudingTabs();
+      ensureIframe(activeIndex);
+
+      const activeBtn = document.getElementById('tab-btn-' + site.id);
+      if (activeBtn && activeBtn.scrollIntoView) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadCachedSites();
+      switchSite(0);
+      syncWithGitHubHub();
+    });
+
+    // 每次从后台切回前台时自动与 github.com/lzq1206/hub 校验同步最新网页与排序
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        syncWithGitHubHub();
+      }
+    });
+  </script>
+</body>
+</html>

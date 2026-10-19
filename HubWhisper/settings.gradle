@@ -1,0 +1,2 @@
+rootProject.name = "HubWhisper"
+include ':app'

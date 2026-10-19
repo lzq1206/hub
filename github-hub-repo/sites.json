@@ -1,0 +1,86 @@
+[
+  {
+    "id": "rocket",
+    "name": "RocketWhisper",
+    "url": "https://lzq1206.github.io/notam-whisper/",
+    "icon": "🚀",
+    "color": "#38bdf8"
+  },
+  {
+    "id": "film",
+    "name": "FilmWhisper",
+    "url": "https://lzq1206.github.io/FilmWhisper/",
+    "icon": "🎬",
+    "color": "#f59e0b"
+  },
+  {
+    "id": "cosmos",
+    "name": "CosmosWhisper",
+    "url": "https://lzq1206.github.io/CosmosWhisper/",
+    "icon": "🌌",
+    "color": "#a855f7"
+  },
+  {
+    "id": "subway",
+    "name": "SubwayWhisper",
+    "url": "https://lzq1206.github.io/SubwayWhisper/",
+    "icon": "🚇",
+    "color": "#10b981"
+  },
+  {
+    "id": "weather",
+    "name": "WeatherWhisper",
+    "url": "https://lzq1206.github.io/WeatherWhisper/",
+    "icon": "⛅",
+    "color": "#06b6d4"
+  },
+  {
+    "id": "cultural",
+    "name": "CulturalWhisper",
+    "url": "https://lzq1206.github.io/CulturalWhisper/",
+    "icon": "🏛️",
+    "color": "#ec4899"
+  },
+  {
+    "id": "orbit",
+    "name": "OrbitWhisper",
+    "url": "https://lzq1206.github.io/OrbitWhisper/",
+    "icon": "🛰️",
+    "color": "#6366f1"
+  },
+  {
+    "id": "poetry",
+    "name": "Poetry-Whisper",
+    "url": "https://lzq1206.github.io/Poetry-Whisper/",
+    "icon": "📜",
+    "color": "#14b8a6"
+  },
+  {
+    "id": "aiweb",
+    "name": "AIWeb",
+    "url": "https://lzq1206.github.io/AIWeb/",
+    "icon": "🤖",
+    "color": "#8b5cf6"
+  },
+  {
+    "id": "retro",
+    "name": "RetroWhisper",
+    "url": "https://lzq1206.github.io/RetroWhisper/",
+    "icon": "🕹️",
+    "color": "#f97316"
+  },
+  {
+    "id": "mirage",
+    "name": "MirageWhisper",
+    "url": "https://lzq1206.github.io/MirageWhisper/",
+    "icon": "✨",
+    "color": "#e879f9"
+  },
+  {
+    "id": "milkyseas",
+    "name": "Milkyseas",
+    "url": "https://lzq1206.github.io/Milkyseas/",
+    "icon": "🌊",
+    "color": "#2dd4bf"
+  }
+]
