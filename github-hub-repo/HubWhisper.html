@@ -114,7 +114,8 @@
     }
     /*
      * Upward-protruding tabs rail:
-     * Generous top/left/right/bottom padding (compensated with negative margin) so the active
+     * Because overflow-x: auto creates a scrollport clip box in CSS, we add generous
+     * top/left/right/bottom padding (compensated with negative margin) so the active
      * tab's outer glow (box-shadow) has 32px of unclipped breathing room in every direction.
      */
     .protruding-tabs-rail {
@@ -239,7 +240,7 @@
   <!-- MAXIMIZED FULL-SCREEN WEBVIEW / IFRAME CONTAINER (底部边缘渐隐卷入下方卡槽) -->
   <main id="iframeStage" class="stage-container"></main>
 
-  <!-- BOTTOM INVERTED CARD + UPWARD-PROTRUDING FOLDER TABS (与 github.com/lzq1206/hub 远程实时同步) -->
+  <!-- BOTTOM INVERTED CARD + UPWARD-PROTRUDING FOLDER TABS (整体上移避开全面屏底部手势区 + 渐变卷入过渡) -->
   <footer id="bottomDeckWrapper" class="bottom-deck-wrapper">
     <div class="roll-in-crease" aria-hidden="true"></div>
     <nav id="protrudingTabRail" aria-label="底部伸出式标签切换栏" class="protruding-tabs-rail no-scrollbar"></nav>
@@ -700,3 +701,4 @@
   </script>
 </body>
 </html>
+
