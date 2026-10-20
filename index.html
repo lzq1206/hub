@@ -3,12 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#050811" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="HubWhisper" />
   <title>HubWhisper — 多站点聚合微端</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --tab-bottom-gap: 20px;
+    }
+    :root.is-standalone {
+      --tab-bottom-gap: 28px;
+    }
+    @media (display-mode: standalone) {
+      :root { --tab-bottom-gap: 28px; }
+    }
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -24,6 +38,24 @@
       color: #f8fafc;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
+    /* Keep the shell inside the visible viewport as browser controls resize it.
+       Safe-area padding protects standalone iPhone status/home indicators and landscape notches. */
+    body {
+      position: fixed;
+      top: var(--app-top, 0px);
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: var(--app-height, 100vh);
+      min-height: 0;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+    }
+    @supports (height: 100dvh) {
+      body { height: var(--app-height, 100dvh); }
+    }
     /* Hide scrollbar for protruding tab strip */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -35,9 +67,10 @@
     /* Full-Screen WebView Iframe Stage with bottom edge fade-out into the card slot */
     .stage-container {
       position: relative;
-      flex: 1 1 auto;
+      flex: 1 1 0%;
+      min-height: 0;
       width: 100%;
-      height: 100%;
+      height: auto;
       background: #050811;
       overflow: hidden;
       /* Extend slightly under the gradient roll-in hood so the webpage visibly tucks into the bottom card */
@@ -84,7 +117,7 @@
       overflow: visible;
       /* Extra upward gradient zone + bottom safe-area clearance for gesture navigation bar */
       padding-top: 24px;
-      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(var(--tab-bottom-gap) + env(safe-area-inset-bottom, 0px));
       /* Multi-stop cylindrical roll-in gradient: transparent at top -> soft shadow -> deep card base */
       background: linear-gradient(
         180deg,
@@ -235,7 +268,7 @@
     }
   </style>
 </head>
-<body class="flex flex-col h-screen w-screen overflow-hidden select-none bg-[#050811]">
+<body class="flex flex-col overflow-hidden select-none bg-[#050811]">
 
   <!-- MAXIMIZED FULL-SCREEN WEBVIEW / IFRAME CONTAINER (底部边缘渐隐卷入下方卡槽) -->
   <main id="iframeStage" class="stage-container"></main>
@@ -246,6 +279,45 @@
     <nav id="protrudingTabRail" aria-label="底部伸出式标签切换栏" class="protruding-tabs-rail no-scrollbar"></nav>
     <div class="bottom-card-base"></div>
   </footer>
+
+  <script id="viewport-controller">
+    // Browser chrome changes visualViewport without changing the screen size.
+    // Never resize the layout during pinch zoom; the user must retain the zoomed position.
+    (() => {
+      const root = document.documentElement;
+      const viewport = window.visualViewport;
+      const standalone = window.matchMedia('(display-mode: standalone)');
+      let pendingFrame = 0;
+
+      function updateViewport() {
+        pendingFrame = 0;
+        root.classList.toggle('is-standalone', standalone.matches || navigator.standalone === true);
+        if (viewport && Math.abs(viewport.scale - 1) > 0.01) return;
+
+        const height = viewport ? viewport.height : window.innerHeight;
+        const top = viewport ? viewport.offsetTop : 0;
+        if (height > 0) {
+          root.style.setProperty('--app-height', Math.round(height * 100) / 100 + 'px');
+          root.style.setProperty('--app-top', Math.max(0, top) + 'px');
+        }
+      }
+
+      function scheduleViewportUpdate() {
+        if (!pendingFrame) pendingFrame = window.requestAnimationFrame(updateViewport);
+      }
+
+      window.addEventListener('resize', scheduleViewportUpdate, { passive: true });
+      window.addEventListener('orientationchange', scheduleViewportUpdate, { passive: true });
+      window.addEventListener('pageshow', scheduleViewportUpdate, { passive: true });
+      if (viewport) {
+        viewport.addEventListener('resize', scheduleViewportUpdate, { passive: true });
+        viewport.addEventListener('scroll', scheduleViewportUpdate, { passive: true });
+      }
+      if (standalone.addEventListener) standalone.addEventListener('change', scheduleViewportUpdate);
+      else if (standalone.addListener) standalone.addListener(scheduleViewportUpdate);
+      updateViewport();
+    })();
+  </script>
 
   <script>
     const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v3';
