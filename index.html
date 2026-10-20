@@ -15,13 +15,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --page-background: #050811;
       --tab-bottom-gap: 20px;
+      background-color: var(--page-background);
+      color-scheme: dark;
     }
     :root.is-standalone {
-      --tab-bottom-gap: 28px;
+      --tab-bottom-gap: 24px;
     }
     @media (display-mode: standalone) {
-      :root { --tab-bottom-gap: 28px; }
+      :root { --tab-bottom-gap: 24px; }
     }
     * {
       box-sizing: border-box;
@@ -34,7 +37,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #050811;
+      background-color: var(--page-background);
       color: #f8fafc;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
@@ -52,6 +55,18 @@
       padding-top: env(safe-area-inset-top, 0px);
       padding-right: env(safe-area-inset-right, 0px);
       padding-left: env(safe-area-inset-left, 0px);
+    }
+    /* Paint the reserved status-bar area independently of the embedded website. */
+    body::before {
+      content: "";
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: calc(var(--app-top, 0px) + env(safe-area-inset-top, 0px));
+      background: var(--page-background);
+      pointer-events: none;
     }
     @supports (height: 100dvh) {
       body { height: var(--app-height, 100dvh); }
@@ -99,7 +114,7 @@
       width: 100%;
       height: 100%;
       border: 0;
-      background: #ffffff;
+      background: var(--page-background);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;
