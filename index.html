@@ -331,7 +331,7 @@
   <script>
     // Keep the site list cache isolated after changing iframe origins. Older
     // desktop browsers may otherwise keep the pre-fix cross-origin URL.
-    const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v4';
+    const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v5';
 
     // 远程同步源（按优先级依次尝试：支持 sites.json 配置文件 或 直接解析 lzq1206/hub 的 index.html / README.md）
     const HUB_SYNC_SOURCES = [
@@ -483,12 +483,28 @@
       return normalizeUrl(u).replace(/\/+$/, '').toLowerCase();
     }
 
-    // Hub and the GitHub Pages site share the lzq1206.github.io origin. The
-    // rocket custom domain is still the public standalone URL, but embedding
-    // it cross-origin made the desktop iframe intermittently render only the
-    // black fallback surface. Use the same-origin Pages URL inside Hub.
+    // Keep standalone custom domains in the remote site list, but always load
+    // the corresponding GitHub Pages origin inside Hub. This keeps every card
+    // on the repository's canonical deployment and avoids cross-origin iframe
+    // differences between desktop and mobile browsers.
     const EMBED_URL_OVERRIDES = {
-      'https://rocket.rainywhisper.com': 'https://lzq1206.github.io/notam-whisper/'
+      'https://rocket.rainywhisper.com': 'https://lzq1206.github.io/notam-whisper/',
+      'https://film.rainywhisper.com': 'https://lzq1206.github.io/FilmWhisper/',
+      'https://subway.rainywhisper.com': 'https://lzq1206.github.io/SubwayWhisper/',
+      'https://aiweb.rainywhisper.com': 'https://lzq1206.github.io/AIWeb/',
+      'https://cosmos.rainywhisper.com': 'https://lzq1206.github.io/CosmosWhisper/',
+      'https://orbit.rainywhisper.com': 'https://lzq1206.github.io/OrbitWhisper/',
+      'https://climate.rainywhisper.com': 'https://lzq1206.github.io/WeatherWhisper/',
+      'https://weather.rainywhisper.com': 'https://lzq1206.github.io/WeatherWhisper/',
+      'https://cultural.rainywhisper.com': 'https://lzq1206.github.io/CulturalWhisper/',
+      'https://poetry.rainywhisper.com': 'https://lzq1206.github.io/Poetry-Whisper/',
+      'https://retro.rainywhisper.com': 'https://lzq1206.github.io/RetroWhisper/',
+      'https://milkyseas.rainywhisper.com': 'https://lzq1206.github.io/Milkyseas/',
+      'https://railwaystar.rainywhisper.com': 'https://lzq1206.github.io/railwaystar/',
+      'https://mirage.rainywhisper.com': 'https://lzq1206.github.io/MirageWhisper/',
+      'https://sunset.rainywhisper.com': 'https://lzq1206.github.io/SunsetWhisper/',
+      'https://web.rainywhisper.com': 'https://lzq1206.github.io/webwhisper/',
+      'https://quant.rainywhisper.com': 'https://lzq1206.github.io/QuantWhisper/'
     };
 
     function embedUrlForSite(site) {
