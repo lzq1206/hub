@@ -329,7 +329,9 @@
   </script>
 
   <script>
-    const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v3';
+    // Keep the site list cache isolated after changing iframe origins. Older
+    // desktop browsers may otherwise keep the pre-fix cross-origin URL.
+    const CACHE_STORAGE_KEY = 'hubwhisper_remote_sites_v4';
 
     // 远程同步源（按优先级依次尝试：支持 sites.json 配置文件 或 直接解析 lzq1206/hub 的 index.html / README.md）
     const HUB_SYNC_SOURCES = [
@@ -479,6 +481,19 @@
 
     function urlKey(u) {
       return normalizeUrl(u).replace(/\/+$/, '').toLowerCase();
+    }
+
+    // Hub and the GitHub Pages site share the lzq1206.github.io origin. The
+    // rocket custom domain is still the public standalone URL, but embedding
+    // it cross-origin made the desktop iframe intermittently render only the
+    // black fallback surface. Use the same-origin Pages URL inside Hub.
+    const EMBED_URL_OVERRIDES = {
+      'https://rocket.rainywhisper.com': 'https://lzq1206.github.io/notam-whisper/'
+    };
+
+    function embedUrlForSite(site) {
+      const normalized = urlKey(site && site.url);
+      return EMBED_URL_OVERRIDES[normalized] || normalizeUrl(site && site.url);
     }
 
     function inferIcon(name, urlStr, fallbackEmoji) {
@@ -736,12 +751,13 @@
         frame.classList.remove('active');
       });
 
-      const frameKey = urlKey(site.url);
+      const embedUrl = embedUrlForSite(site);
+      const frameKey = urlKey(embedUrl);
       if (!loadedFrames[frameKey]) {
         const iframe = document.createElement('iframe');
         iframe.id = 'frame-' + site.id;
         iframe.className = 'whisper-iframe active';
-        iframe.src = site.url;
+        iframe.src = embedUrl;
         iframe.setAttribute('allow', 'geolocation; microphone; camera; midi; encrypted-media; autoplay; fullscreen; clipboard-read; clipboard-write; accelerometer; gyroscope');
         iframe.setAttribute('allowfullscreen', 'true');
 
